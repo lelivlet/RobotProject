@@ -5,6 +5,7 @@ public class eenTweedeKlasse {
 	
 	String woord;
 
+	double waarde;
 	
 	int nummer;
 
