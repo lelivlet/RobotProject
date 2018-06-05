@@ -1,4 +1,4 @@
-package Excercises;
+package models;
 
 import lejos.hardware.motor.*;
 import lejos.hardware.port.MotorPort;
