@@ -7,7 +7,7 @@ import lejos.utility.Delay;
 public class Bewegingsapparaat {
 	//Constanten
 	private static final int INTERVAL = 200;
-	private final int Gradenstapje = 360; // Dit is één rotatie van een wiel, dat staat gelijk aan 30 graden
+	private final int Gradenstapje = 360; // Dit is ï¿½ï¿½n rotatie van een wiel, dat staat gelijk aan 30 graden
 	
 	// Motor initialization
 	EV3LargeRegulatedMotor mA = new EV3LargeRegulatedMotor(MotorPort.A);
@@ -43,6 +43,13 @@ public class Bewegingsapparaat {
     	mA.close();
     	mD.close();
     }
+    
+    public void setEngineSpeed(double engineLeft, double engineRight) {
+    	this.mA.setSpeed((float)engineLeft);
+    	this.mD.setSpeed((float)engineRight);
+    }
+    
+    
     //@overload Beweeg naar voren 
     public void vooruitOfAchteruit (char voorOfAchter) {
     	vooruitOfAchteruit(mA.getMaxSpeed(), voorOfAchter);
