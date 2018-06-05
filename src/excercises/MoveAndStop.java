@@ -1,4 +1,4 @@
-package Excercises;
+package excercises;
 
 import lejos.hardware.motor.Motor;
 import lejos.utility.Delay;

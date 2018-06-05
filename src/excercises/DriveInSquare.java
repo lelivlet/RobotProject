@@ -1,4 +1,4 @@
-package Excercises;
+package excercises;
 
 import lejos.hardware.Button;
 import lejos.hardware.Sound;
