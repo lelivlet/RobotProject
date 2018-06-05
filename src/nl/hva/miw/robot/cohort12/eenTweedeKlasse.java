@@ -9,4 +9,5 @@ public class eenTweedeKlasse {
 	
 	int nummer;
 
+	hoi;
 }
