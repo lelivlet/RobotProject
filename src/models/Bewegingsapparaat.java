@@ -6,7 +6,8 @@ import lejos.utility.Delay;
 
 public class Bewegingsapparaat {
 	//Constanten
-	private final int Gadenstapje = 360; // Dit is één rotatie van een wiel, dat staat gelijk aan 30 graden
+	private static final int INTERVAL = 200;
+	private final int Gradenstapje = 360; // Dit is één rotatie van een wiel, dat staat gelijk aan 30 graden
 	
 	// Motor initialization
 	EV3LargeRegulatedMotor mA = new EV3LargeRegulatedMotor(MotorPort.A);
@@ -33,7 +34,7 @@ public class Bewegingsapparaat {
     	}
     	    	
     	// Een 2 sec interval @TODO moet weg op een gegeven moment
-        Delay.msDelay(2000);
+        Delay.msDelay(INTERVAL);
         
         // Stop de motoren
         volledigeStop();
@@ -43,16 +44,16 @@ public class Bewegingsapparaat {
     	mD.close();
     }
     //@overload Beweeg naar voren 
-    public void vooruit (char voorOfAchter) {
+    public void vooruitOfAchteruit (char voorOfAchter) {
     	vooruitOfAchteruit(mA.getMaxSpeed(), voorOfAchter);
     }
     
     /* Roteer methode */
     public void roteer(char richting) {
     	if(richting == 'L') {
-    		mA.rotate(Gadenstapje); // 1 rotaties (360 graden) is ongeveer 30 graden in real life
+    		mA.rotate(Gradenstapje); // 1 rotaties (360 graden) is ongeveer 30 graden in real life
     	} else if(richting == 'R') {
-    		mD.rotate(Gadenstapje);
+    		mD.rotate(Gradenstapje);
     	} else {
     		System.out.println("Deze richting bestaat niet!");
     	}
