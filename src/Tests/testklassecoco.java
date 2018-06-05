@@ -1,4 +1,4 @@
-package nl.hva.miw.robot.cohort12;
+package Tests;
 
 public class testklassecoco {
 
