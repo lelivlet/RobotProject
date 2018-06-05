@@ -83,7 +83,7 @@ public class Robot {
 				bwApparaat.setEngineSpeed(defaultSpeed, defaultSpeed);
 			}
 		}
-
+		bwApparaat.volledigeStop();
 	}
 
 }
