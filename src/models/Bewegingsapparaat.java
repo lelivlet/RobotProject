@@ -5,6 +5,9 @@ import lejos.hardware.port.MotorPort;
 import lejos.utility.Delay;
 
 public class Bewegingsapparaat {
+	//Constanten
+	private final int Gadenstapje = 360; // Dit is één rotatie van een wiel, dat staat gelijk aan 30 graden
+	
 	// Motor initialization
 	EV3LargeRegulatedMotor mA = new EV3LargeRegulatedMotor(MotorPort.A);
 	EV3LargeRegulatedMotor mD = new EV3LargeRegulatedMotor(MotorPort.D);
@@ -47,9 +50,9 @@ public class Bewegingsapparaat {
     /* Roteer methode */
     public void roteer(char richting) {
     	if(richting == 'L') {
-    		mA.rotate(360); // 1 rotaties (360 graden) is ongeveer 30 graden in real life
+    		mA.rotate(Gadenstapje); // 1 rotaties (360 graden) is ongeveer 30 graden in real life
     	} else if(richting == 'R') {
-    		mD.rotate(360);
+    		mD.rotate(Gadenstapje);
     	} else {
     		System.out.println("Deze richting bestaat niet!");
     	}
@@ -61,5 +64,4 @@ public class Bewegingsapparaat {
     	mD.stop();
     }
     
-
 }
