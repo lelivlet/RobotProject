@@ -1,6 +1,7 @@
 package models;
 
 import lejos.hardware.port.Port;
+import lejos.hardware.port.SensorPort;
 import lejos.hardware.sensor.EV3ColorSensor;
 import lejos.robotics.Color;
 import lejos.robotics.ColorDetector;
@@ -8,8 +9,10 @@ import lejos.robotics.ColorIdentifier;
 
 public class ColorSensor implements ColorDetector, ColorIdentifier {
 
-	EV3ColorSensor sensor;
+	// sensor moet altijd in S4
+	EV3ColorSensor sensor = new EV3ColorSensor(SensorPort.S4);
 	float[] sample;
+	
 
 	@Override
 	public int getColorID() {
@@ -24,13 +27,13 @@ public class ColorSensor implements ColorDetector, ColorIdentifier {
 	}
 
 	/**
-	 * Creates ColorSensor object. This is a wrapper class for EV3ColorSensor.
+	 * Creëert ColorSensor object. 
+	 * Dit is een wrapper class (vertaalslag) voor EV3ColorSensor.
 	 * 
 	 * @param port
-	 *            SensorPort of EV3ColorSensor device.
+	 * SensorPort of EV3ColorSensor device.
 	 */
-	public ColorSensor(Port port) {
-		sensor = new EV3ColorSensor(port);
+	public ColorSensor() {
 		setRedMode();
 	}
 
