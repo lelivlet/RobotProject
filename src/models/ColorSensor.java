@@ -93,7 +93,7 @@ public class ColorSensor implements ColorDetector, ColorIdentifier {
 	// een functie die een grijsschaal maakt van de drie kleuren
 	public float getBrightness(float RGBColor[]) {
 		// gemiddelde van de drie waardes om grijs te krijgen.
-		float grijsWaarde = RGBColor[0] + RGBColor[1] + RGBColor[3] / 3;
+		float grijsWaarde = (RGBColor[0] + RGBColor[1] + RGBColor[3]) / 3;
 		return grijsWaarde;
 	}
 	
