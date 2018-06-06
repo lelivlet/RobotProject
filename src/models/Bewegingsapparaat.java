@@ -72,4 +72,9 @@ public class Bewegingsapparaat {
     	mD.stop();
     }
     
+    public void close() {
+    	// Geef de motoren vrij
+    	mA.close();
+    	mD.close();
+    }
 }

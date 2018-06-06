@@ -44,7 +44,10 @@ public class Robot {
 			}
 		}
 	}
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
 
 	// TODO individual engine control
 	public void volgLijn2() {
