@@ -14,9 +14,8 @@ public class Robot {
 
 	boolean rightSide = true;
 
-	double defaultSpeed = 50;
-	// max adjust. 0.5 = 100 ; 0 = 150
-	double draaisnelheid = 400;
+	double defaultSpeed = 10;
+	double draaisnelheid = 200;
 
 	// Constructor
 	public Robot() {
