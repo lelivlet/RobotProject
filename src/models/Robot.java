@@ -44,6 +44,7 @@ public class Robot {
 			}
 		}
 	}
+<<<<<<< Updated upstream
 
 	// TODO individual engine control
 	public void volgLijn2() {
@@ -86,4 +87,12 @@ public class Robot {
 		bwApparaat.volledigeStop();
 	}
 
+=======
+	
+	public void close() {
+    	// sluit de motoren en sensor af
+    	bwApparaat.close();
+    	CS.close();
+	}	
+>>>>>>> Stashed changes
 }
