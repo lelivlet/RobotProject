@@ -18,13 +18,13 @@ public class ColorSensor implements ColorDetector, ColorIdentifier {
 
 	// sensor moet altijd in S4
 	EV3ColorSensor sensor = new EV3ColorSensor(SensorPort.S4);
-	float[] sample;
+	float[] sample; // Hier komt rood, groen en blauw in
 	float black;
 	float white;
 	float gray;
 	
 	/**
-	 * Creï¿½ert ColorSensor object. Dit is een wrapper class (vertaalslag) voor
+	 * Creëert ColorSensor object. Dit is een wrapper class (vertaalslag) voor
 	 * EV3ColorSensor.
 	 * 
 	 * @param port
@@ -53,7 +53,7 @@ public class ColorSensor implements ColorDetector, ColorIdentifier {
 	 */
 	public void setRedMode() {
 		sensor.setCurrentMode("Red");
-		sample = new float[sensor.sampleSize()];
+		this.sample = new float[sensor.sampleSize()];
 	}
 
 	/**
@@ -61,7 +61,7 @@ public class ColorSensor implements ColorDetector, ColorIdentifier {
 	 */
 	public void setRGBMode() {
 		sensor.setCurrentMode("RGB");
-		sample = new float[sensor.sampleSize()];
+		this.sample = new float[sensor.sampleSize()];
 	}
 
 	/**
@@ -92,7 +92,7 @@ public class ColorSensor implements ColorDetector, ColorIdentifier {
 
 	// een functie die een grijsschaal maakt van de drie kleuren
 	public float getBrightness(float RGBColor[]) {
-		// gemiddelde van de drie waardes om grijs te krijgen.
+		// gemiddelde van de drie waardes om grijs te krijgen (max 255).
 		float grijsWaarde = (RGBColor[0] + RGBColor[1] + RGBColor[2]) / 3;
 		return grijsWaarde;
 	}
@@ -108,7 +108,6 @@ public class ColorSensor implements ColorDetector, ColorIdentifier {
 		float currentBrightness = getBrightness(currentSample);
 		float normalisedBrightness = (currentBrightness - black) / white;
 		return normalisedBrightness;
-		
 	}
 	
 	// kleurcalibratie
