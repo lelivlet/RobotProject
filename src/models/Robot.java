@@ -16,7 +16,7 @@ public class Robot {
 
 	double defaultSpeed = 100;
 	// max adjust. 0.5 = 100 ; 0 = 150
-	double turningSpeed = 50;
+	double draaisnelheid = 100;
 
 	// Constructor
 	public Robot() {
@@ -28,18 +28,18 @@ public class Robot {
 	public void volgLijn() {
 		float input = CS.getRed();
 		if (input < GRIJS) {
-			bwApparaat.vooruitOfAchteruit(250, 'V');
+			bwApparaat.vooruitOfAchteruit('V');
 			Delay.msDelay(200);
 			volgLijn();
 		} else if (input >= GRIJS) {
 			bwApparaat.volledigeStop();
-			bwApparaat.roteer('R');
+			bwApparaat.roteer('R', draaisnelheid);
 			float inputNieuw = CS.getRed();
 			if (inputNieuw < input) { // Als de nieuwe meting donkerder wordt (en dus lager) dan draait het voertuig
 										// de juiste kant op
 				volgLijn();
 			} else { // Als de meting lichter wordt dan draaien we de andere kant op
-				bwApparaat.roteer('L');
+				bwApparaat.roteer('L', draaisnelheid);
 				volgLijn();
 			}
 		}
@@ -60,25 +60,26 @@ public class Robot {
 		LCD.clear();
 		Delay.msDelay(500);
 
-		bwApparaat.vooruitOfAchteruit((float) defaultSpeed, 'V');
+		bwApparaat.vooruitOfAchteruit('V');
 
 		while (Button.ENTER.isUp()) {
 			currentBrightness = CS.getCurrentNormalisedBrightness();
+			LCD.drawString("Grijswaarde: " + currentBrightness, 0, 0);
 			if (currentBrightness < 0.5) {
 				if (rightSide) {
-					bwApparaat.setEngineSpeed(defaultSpeed + (2 * turningSpeed * Math.abs(0.5 - currentBrightness)),
+					bwApparaat.setEngineSpeed(defaultSpeed + (2 * draaisnelheid * Math.abs(0.5 - currentBrightness)),
 							defaultSpeed);
 				} else {
 					bwApparaat.setEngineSpeed(defaultSpeed,
-							defaultSpeed + (2 * turningSpeed * Math.abs(0.5 - currentBrightness)));
+							defaultSpeed + (2 * draaisnelheid * Math.abs(0.5 - currentBrightness)));
 				}
 			} else if (currentBrightness > 0.5) {
 				if (!rightSide) {
-					bwApparaat.setEngineSpeed(defaultSpeed + (2 * turningSpeed * Math.abs(0.5 - currentBrightness)),
+					bwApparaat.setEngineSpeed(defaultSpeed + (2 * draaisnelheid * Math.abs(0.5 - currentBrightness)),
 							defaultSpeed);
 				} else {
 					bwApparaat.setEngineSpeed(defaultSpeed,
-							defaultSpeed + (2 * turningSpeed * Math.abs(0.5 - currentBrightness)));
+							defaultSpeed + (2 * draaisnelheid * Math.abs(0.5 - currentBrightness)));
 				}
 			} else {
 				bwApparaat.setEngineSpeed(defaultSpeed, defaultSpeed);
@@ -87,7 +88,41 @@ public class Robot {
 		bwApparaat.volledigeStop();
 	}
 
+	// TODO individual engine control (Harmen)
+		public void volgLijn3() {
+			
+			float currentBrightness;
 
+			CS.setBlackWhiteFromCalibration();
+
+			Delay.msDelay(500);
+			LCD.drawString("Press Enter to begin", 0, 0);
+			while (Button.ENTER.isUp()) {
+			}
+			LCD.clear();
+			Delay.msDelay(500);
+
+			
+			
+			while (Button.ENTER.isUp()) {
+				currentBrightness = CS.getCurrentNormalisedBrightness();
+				bwApparaat.vooruitOfAchteruit('V');
+				if (currentBrightness < 0.5) {
+					bwApparaat.vooruitOfAchteruit('V');
+				} else {
+					bwApparaat.roteer('L', draaisnelheid);
+					Delay.msDelay(200);
+					float newBrightness = CS.getCurrentNormalisedBrightness();
+					if (newBrightness > 0.5) {
+						bwApparaat.roteer('R', draaisnelheid);
+						Delay.msDelay(400);
+					}
+						
+				}
+							
+			}
+			bwApparaat.volledigeStop();			
+		}
 	
 	public void close() {
     	// sluit de motoren en sensor af

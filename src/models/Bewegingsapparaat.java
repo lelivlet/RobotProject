@@ -1,13 +1,16 @@
 package models;
 
+import javax.management.MBeanAttributeInfo;
+
 import lejos.hardware.motor.*;
 import lejos.hardware.port.MotorPort;
 import lejos.utility.Delay;
 
 public class Bewegingsapparaat {
 	//Constanten
-	private static final int INTERVAL = 200;
-	private final int Gradenstapje = 360; // Dit is ��n rotatie van een wiel, dat staat gelijk aan 30 graden
+//	private static final int INTERVAL = 200;
+//	private final int Gradenstapje = 360; // Dit is ��n rotatie van een wiel, dat staat gelijk aan 30 graden
+	private float snelheid; // 
 	
 	// Motor initialization
 	EV3LargeRegulatedMotor mA = new EV3LargeRegulatedMotor(MotorPort.A);
@@ -16,12 +19,20 @@ public class Bewegingsapparaat {
     // Constructor    
     public Bewegingsapparaat() {
 		super();
+		this.snelheid = 100; 
 	}
 
-    
+     
+	public Bewegingsapparaat(float snelheid) {
+		super();
+		this.snelheid = snelheid;
+	}
+
+
+
 	// Methodes:
     /* Beweeg naar voren of naar achteren */
-    public void vooruitOfAchteruit (float snelheid, char voorOfAchter) {
+    public void vooruitOfAchteruit (char voorOfAchter) {
     	mA.setSpeed(snelheid);
     	mD.setSpeed(snelheid);
     	// Geef snelheid in graden/sec
@@ -52,16 +63,17 @@ public class Bewegingsapparaat {
     
     
     //@overload Beweeg naar voren 
-    public void vooruitOfAchteruit (char voorOfAchter) {
-    	vooruitOfAchteruit(mA.getMaxSpeed(), voorOfAchter);
-    }
+//    public void vooruitOfAchteruit (char voorOfAchter) {
+//    	vooruitOfAchteruit(mA.getMaxSpeed(), voorOfAchter);
+//    }
     
     /* Roteer methode */
-    public void roteer(char richting) {
+    public void roteer(char richting, double draaisnelheid) {
     	if(richting == 'L') {
-    		mA.rotate(Gradenstapje); // 1 rotaties (360 graden) is ongeveer 30 graden in real life
+//    		mA.rotate(Gradenstapje); // 1 rotaties (360 graden) is ongeveer 30 graden in real life
+    		setEngineSpeed(draaisnelheid, 0);
     	} else if(richting == 'R') {
-    		mD.rotate(Gradenstapje);
+    		setEngineSpeed(0, draaisnelheid);
     	} else {
     		System.out.println("Deze richting bestaat niet!");
     	}
@@ -73,7 +85,17 @@ public class Bewegingsapparaat {
     	mD.stop();
     }
     
-    public void close() {
+    public float getSnelheid() {
+		return snelheid;
+	}
+
+
+	public void setSnelheid(float snelheid) {
+		this.snelheid = snelheid;
+	}
+
+
+	public void close() {
     	// Geef de motoren vrij
     	mA.close();
     	mD.close();
