@@ -32,16 +32,17 @@ public class Bewegingsapparaat {
     		mA.backward();
         	mD.backward();
     	}
-    	    	
-    	// Een 2 sec interval @TODO moet weg op een gegeven moment
-        Delay.msDelay(INTERVAL);
-        
-        // Stop de motoren
-        volledigeStop();
-    	    	
-    	// Geef de motoren vrij
-    	mA.close();
-    	mD.close();
+    	
+    	// Dit kan in theorie gewoon weg! 
+//    	// Een 2 sec interval @TODO moet weg op een gegeven moment
+//        Delay.msDelay(INTERVAL);
+//        
+//        // Stop de motoren
+//        volledigeStop();
+//    	    	
+//    	// Geef de motoren vrij
+//    	mA.close();
+//    	mD.close();
     }
     
     public void setEngineSpeed(double engineLeft, double engineRight) {
