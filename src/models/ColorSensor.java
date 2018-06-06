@@ -32,6 +32,7 @@ public class ColorSensor implements ColorDetector, ColorIdentifier {
 	 */
 	public ColorSensor() {
 		// setRedMode();
+		super();
 		setRGBMode();
 	}
 	
