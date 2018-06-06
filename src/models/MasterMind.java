@@ -9,6 +9,7 @@ public class MasterMind {
 	private int[] kleuren = { 1, 2, 3, 4, 5, 6, 7 };
 	private int aantalGoed = 0;
 	private int[] gok = new int[4];
+	private boolean[] goed = { false, false, false, false };
 	ColorSensor CS = new ColorSensor();
 
 	public MasterMind() {
@@ -23,32 +24,32 @@ public class MasterMind {
 		for (int i = 0; i < kleurenBrick.length; i++) {
 			kleurenBrick[i] = kleuren[(int) (Math.random() * 7)];
 		}
-		while (aantalGoed < 4) {
+		while (goed[0] == false || goed[1] == false || goed[2] == false || goed[3] == false) {
 			for (int i = 0; i < kleurenBrick.length; i++) {
 				System.out.println("Aantal goed is " + aantalGoed);
+				System.out.println("Positie 1=" + goed[0] + "Positie 2=" + goed[1] + "Positie 3=" + goed[2]
+						+ "Positie 4=" + goed[3]);
 				System.out.println("Doe gok " + (i + 1) + " onder de sensor");
 				waitForKey(Button.ENTER);
 				gok[i] = CS.getColorID();
 				if (gok[i] == kleurenBrick[i]) {
 					System.out.println("Dat is goed");
+					goed[i] = true;
 					aantalGoed++;
-				} else {
-					for(int x=0;x<kleurenBrick.length;x++) {
-						if(gok[i]==kleurenBrick[x]) {
-							System.out.println("Kleur is goed maar positie niet");
-							
-						}else {
-							System.out.println("Kleur zit niet in combinatie");
-						}
-					}
-				}
-				
-					
-				
+				} else if (gok[i] == kleurenBrick[0] || gok[i] == kleurenBrick[1] || gok[i] == kleurenBrick[2]
+						|| gok[i] == kleurenBrick[3]) {
 
+					System.out.println("Kleur is goed maar positie niet");
+
+				} else {
+					System.out.println("Kleur zit niet in de oplossing");
+				}
 			}
+
 		}
+		System.out.println("Gewonnen je hebt alles geraden");
 	}
+
 
 	public void waitForKey(Key key) {
 		while(key.isUp()) {
@@ -58,4 +59,5 @@ public class MasterMind {
 			Delay.msDelay(100);
 		}
 
+	}
 }
