@@ -41,8 +41,6 @@ public class PID_Controller {
 		super();
 	}
 	
-	
-	
 	public double getKp() {
 		return kp;
 	}

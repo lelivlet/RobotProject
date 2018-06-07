@@ -19,7 +19,7 @@ public class Bewegingsapparaat {
 	EV3LargeRegulatedMotor mA = new EV3LargeRegulatedMotor(MotorPort.A);
 	EV3LargeRegulatedMotor mD = new EV3LargeRegulatedMotor(MotorPort.D);
 
-	// Constructor
+	// no args Constructor
 	public Bewegingsapparaat() {
 		super();
 		this.snelheid = 10;
