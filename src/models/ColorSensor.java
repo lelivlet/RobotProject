@@ -36,6 +36,7 @@ public class ColorSensor implements ColorDetector, ColorIdentifier {
 		setRGBMode();
 	}
 	
+	
 	@Override
 	public int getColorID() {
 		// TODO Auto-generated method stub
