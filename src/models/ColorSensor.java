@@ -37,10 +37,13 @@ public class ColorSensor implements ColorDetector, ColorIdentifier {
 	}
 	
 	
+	
 	@Override
-	public int getColorID() {
-		// TODO Auto-generated method stub
-		return 0;
+	public int getColorID()
+	{
+		sensor.fetchSample(sample, 0);
+		
+		return (int) sample[0];
 	}
 
 	@Override
@@ -64,6 +67,19 @@ public class ColorSensor implements ColorDetector, ColorIdentifier {
 		sensor.setCurrentMode("RGB");
 		this.sample = new float[sensor.sampleSize()];
 	}
+	
+	public void setColorIdMode()
+	{
+		sensor.setCurrentMode("ColorID");
+		this.sample = new float[sensor.sampleSize()];
+	}
+	public void setFloodLight(boolean on) {
+		sensor.setFloodlight(on);
+	}
+	public void setFloodLight(int color) {
+		sensor.setFloodlight(color);
+	}
+	
 
 	/**
 	 * Return Red light level. Use with Red mode. Sensor led should be red.
