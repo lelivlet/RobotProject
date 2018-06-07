@@ -6,14 +6,14 @@ import lejos.hardware.motor.*;
 import lejos.hardware.port.MotorPort;
 import lejos.utility.Delay;
 
+/**
+ * @author Jorik en Joey
+ *
+ */
+
 public class Bewegingsapparaat {
 	// Constanten
-	// private static final int INTERVAL = 200;
-	// private final int Gradenstapje = 360; // Dit is ��n rotatie van een wiel,
-	// dat staat gelijk aan 30 graden
 	private float snelheid;
-	private static final int INTERVAL = 200;
-	private final int Gradenstapje = 360; // Dit is een rotatie van een wiel, dat staat gelijk aan 30 graden
 
 	// Motor initialization
 	EV3LargeRegulatedMotor mA = new EV3LargeRegulatedMotor(MotorPort.A);
@@ -22,9 +22,9 @@ public class Bewegingsapparaat {
 	// no args Constructor
 	public Bewegingsapparaat() {
 		super();
-		this.snelheid = 10;
 	}
 
+	// Constructor met snelheid
 	public Bewegingsapparaat(float snelheid) {
 		super();
 		this.snelheid = snelheid;
@@ -51,7 +51,7 @@ public class Bewegingsapparaat {
 		this.mD.setSpeed((float) engineRight);
 	}
 
-	/* Roteer methode */
+	// Roteer methode
 	public void roteer(char richting, double draaisnelheid) {
 		if (richting == 'L') {
 			// mA.rotate(Gradenstapje); // 1 rotaties (360 graden) is ongeveer 30 graden in
@@ -64,7 +64,7 @@ public class Bewegingsapparaat {
 		}
 	}
 
-	/* Volledige stop methode */
+	// Volledige stop methode
 	public void volledigeStop() {
 		mA.stop();
 		mD.stop();
