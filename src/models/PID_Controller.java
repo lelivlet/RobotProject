@@ -83,8 +83,8 @@ public class PID_Controller {
 		
 		float correction = kp * error + ki * integral + kd * derivative;
 		
-		lastError = error;
-		lastIntegral = integral;
+		this.lastError = error;
+		this.lastIntegral = integral;
 		
 		return correction;
 	}
