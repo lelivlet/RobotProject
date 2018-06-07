@@ -1,5 +1,6 @@
 package models;
 
+import Programmas.MasterMind;
 import lejos.hardware.Button;
 import lejos.hardware.lcd.LCD;
 import lejos.utility.Delay;
@@ -19,6 +20,7 @@ public class Robot {
 	Bewegingsapparaat bwApparaat = new Bewegingsapparaat(100);
 	PID_Controller pidController = new PID_Controller();
 	ColorSensor CS = new ColorSensor();
+	MasterMind mastermind = new MasterMind(CS);
 
 	// Constructor
 	public Robot() {
@@ -29,7 +31,8 @@ public class Robot {
 	public void volgLijn() {
 		float currentBrightness;
 		// Hier kan de Kp van de controller aangepast worden om sneller of langzamer te draaien.
-		pidController.setKp(3);
+		pidController.setKp((float)2);
+		pidController.setKd((float)0.2);
 
 		// Calibratie aanvraag
 		CS.setBlackWhiteFromCalibration();
@@ -80,6 +83,10 @@ public class Robot {
 
 	public ColorSensor getCS() {
 		return CS;
+	}
+
+	public MasterMind getMastermind() {
+		return mastermind;
 	}
 	
 	

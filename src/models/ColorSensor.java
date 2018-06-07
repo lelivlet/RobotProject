@@ -18,10 +18,17 @@ public class ColorSensor implements ColorDetector, ColorIdentifier {
 
 	// sensor moet altijd in S4
 	EV3ColorSensor sensor = new EV3ColorSensor(SensorPort.S4);
-	float[] sample; // Hier komt rood, groen en blauw in
 	float black;
 	float white;
-	float gray;
+	float[] sample; // Hier komt rood, groen en blauw in
+//	float[] blackColor; // TEST MET COLORCALIBRATIE
+//	float[] blueColor;
+//	float[] greenColor;
+//	float[] yellowColor;
+//	float[] redColor;
+//	float[] whiteColor;
+//	float[] brownColor;
+//	float gray;
 	
 	/**
 	 * Creëert ColorSensor object. Dit is een wrapper class (vertaalslag) voor
@@ -36,19 +43,15 @@ public class ColorSensor implements ColorDetector, ColorIdentifier {
 		setRGBMode();
 	}
 	
-	
-	
 	@Override
 	public int getColorID()
 	{
 		sensor.fetchSample(sample, 0);
-		
 		return (int) sample[0];
 	}
 
 	@Override
 	public Color getColor() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -68,8 +71,7 @@ public class ColorSensor implements ColorDetector, ColorIdentifier {
 		this.sample = new float[sensor.sampleSize()];
 	}
 	
-	public void setColorIdMode()
-	{
+	public void setColorIdMode() {
 		sensor.setCurrentMode("ColorID");
 		this.sample = new float[sensor.sampleSize()];
 	}
@@ -114,10 +116,21 @@ public class ColorSensor implements ColorDetector, ColorIdentifier {
 		return grijsWaarde;
 	}
 	
+//	// Alle kleuren calibreren // TEST MET COLORCALIBRATIE
+//	public void setColorFromCalibration() {
+//		this.blackColor = calibrateColor("black");
+//		this.blueColor = calibrateColor("blue");
+//		this.greenColor = calibrateColor("green");
+//		this.yellowColor = calibrateColor("yellow");
+//		this.redColor = calibrateColor("red");
+//		this.whiteColor = calibrateColor("white");
+//		this.brownColor = calibrateColor("brown");
+//	}
+	
+	// Calibreer wit en zwart
 	public void setBlackWhiteFromCalibration() {
 		this.black = getBrightness(calibrateColor("black"));
 		this.white = getBrightness(calibrateColor("white"));
-
 	}
 	// grey = 0.5
 	public float getCurrentNormalisedBrightness() {
