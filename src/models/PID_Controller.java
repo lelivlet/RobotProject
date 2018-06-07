@@ -2,6 +2,7 @@ package models;
 
 /**
  * @author Harmen Lelivelt
+ * This is a general PID controller to be used by the robot.
  *
  */
 
@@ -68,6 +69,14 @@ public class PID_Controller {
 	public float getLastIntegral() {
 		return lastIntegral;
 	}
+	
+	
+
+	public static float getMidpoint() {
+		return MIDPOINT;
+	}
+
+
 
 	public float getCorrection (float normalizedValue) {
 		float error = MIDPOINT - normalizedValue;
