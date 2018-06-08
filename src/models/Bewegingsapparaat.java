@@ -32,17 +32,29 @@ public class Bewegingsapparaat {
 
 	// Methodes:
 	/* Beweeg naar voren of naar achteren */
-	public void vooruitOfAchteruit (char voorOfAchter) {
-    	mA.setSpeed(snelheid);
-    	mD.setSpeed(snelheid);
-    	// Geef snelheid in graden/sec
-    	if (voorOfAchter == 'V') {
-    		mA.forward();
-        	mD.forward();
-    	} else if (voorOfAchter == 'A') {
-    		mA.backward();
-        	mD.backward();
-    	}
+	public void vooruitOfAchteruit(char voorOfAchter) {
+		mA.setSpeed(snelheid);
+		mD.setSpeed(snelheid);
+		// Geef snelheid in graden/sec
+		if (voorOfAchter == 'V') {
+			mA.forward();
+			mD.forward();
+		} else if (voorOfAchter == 'A') {
+			mA.backward();
+			mD.backward();
+		}
+	}
+
+	public void reverseOpposite(char richting) {
+		mA.setSpeed(100);
+		mD.setSpeed(100);
+		if (richting == 'L') {
+			mA.backward();
+			mD.forward();
+		} else if (richting == 'R') {
+			mA.forward();
+			mD.backward();
+		}
 	}
 
 	// Set engine speed

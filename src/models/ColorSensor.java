@@ -21,14 +21,7 @@ public class ColorSensor implements ColorDetector, ColorIdentifier {
 	float black;
 	float white;
 	float[] sample; // Hier komt rood, groen en blauw in
-//	float[] blackColor; // TEST MET COLORCALIBRATIE
-//	float[] blueColor;
-//	float[] greenColor;
-//	float[] yellowColor;
-//	float[] redColor;
-//	float[] whiteColor;
-//	float[] brownColor;
-//	float gray;
+	float gray;
 	
 	/**
 	 * Creëert ColorSensor object. Dit is een wrapper class (vertaalslag) voor
@@ -115,17 +108,6 @@ public class ColorSensor implements ColorDetector, ColorIdentifier {
 		float grijsWaarde = (RGBColor[0] + RGBColor[1] + RGBColor[2]) / 3;
 		return grijsWaarde;
 	}
-	
-//	// Alle kleuren calibreren // TEST MET COLORCALIBRATIE
-//	public void setColorFromCalibration() {
-//		this.blackColor = calibrateColor("black");
-//		this.blueColor = calibrateColor("blue");
-//		this.greenColor = calibrateColor("green");
-//		this.yellowColor = calibrateColor("yellow");
-//		this.redColor = calibrateColor("red");
-//		this.whiteColor = calibrateColor("white");
-//		this.brownColor = calibrateColor("brown");
-//	}
 	
 	// Calibreer wit en zwart
 	public void setBlackWhiteFromCalibration() {

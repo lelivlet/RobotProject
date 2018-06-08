@@ -2,63 +2,84 @@ package Programmas;
 
 import lejos.hardware.Button;
 import lejos.hardware.Key;
+import lejos.hardware.Sound;
 import lejos.robotics.Color;
 import lejos.utility.Delay;
 import models.ColorSensor;
 
 public class MasterMind {
-	// 1=Zwart 2=Blauw 3=Groen 4=Geel 5=Rood 6=Wit 7=Bruin
-	private int[] gok = new int[4];
+	// 0 = rood, 1 = groen, 2 = blauw, 3 = geel, 6 = wit, 7 = zwart
+	private int[] guess = new int[4];
+	private int[] randomToNumber = { 0, 1, 2, 3, 6, 7 };
+	private String[] numberToColor = { "rood", "groen", "blauw", "geel", "", "", "wit", "zwart" };
 	ColorSensor CS;
 
+	// Constructor
 	public MasterMind(ColorSensor CS) {
 		super();
 		this.CS = CS;
 	}
 
 	// Creëer een random raadsel
-	public int[] maakOplossing() { // Naamgeving kan anders
-		int[] oplossing = new int[4];
-		for (int i = 0; i < oplossing.length; i++) {
-			oplossing[i] = ((int) (Math.random() * 7) + 1);
-			System.out.println(oplossing[i]); //TEST***
+	public int[] createRiddel() { // Naamgeving kan anders
+		int[] riddle = new int[4];
+		for (int i = 0; i < riddle.length; i++) {
+			int randomNumber = ((int) (Math.random() * 6));
+			riddle[i] = randomToNumber[randomNumber];
+			System.out.println(numberToColor[riddle[i]]);// TEST***
 		}
-		return oplossing;
+		return riddle;
 	}
 
 	// doe 1 keer 4 enkele gokjes (dus 1 beurt als het ware)
-	public int[] doeGok() {
-		for (int i = 0; i < this.gok.length; i++) {
+	public int[] takeAGuess() {
+		for (int i = 0; i < guess.length; i++) {
 			System.out.println("Doe gok " + (i + 1) + " onder  de sensor");
 			waitForKey(Button.ENTER);
-			gok[i] = CS.getColorID();
-			System.out.println(gok[i]); //TEST***
+			guess[i] = CS.getColorID();
+			int test = guess[i]; // TEST***
+			System.out.println(numberToColor[test]); // TEST***
 		}
-		return gok;
+		return guess;
 	}
 
 	// geeft het aantal exact goed geraden pinnetjes (goede kleur en op juiste
 	// positie)
-	public int aantalGeraden(int[] oplossing, int[] gok) {
-		int aantalGoed = 0;
-		for (int x = 0; x < oplossing.length; x++) {
-			if (gok[x] == oplossing[x]) {
-				aantalGoed++;
+	public int[] numbersGuessed(int[] riddle, int[] guess) {
+		int numberFullyCorrect = 0;
+		for (int i = 0; i < riddle.length; i++) {
+			if (guess[i] == riddle[i]) {
+				numberFullyCorrect++;
+				riddle[i] = 66;
+				guess[i] = 99;
 			}
 		}
-		return aantalGoed;
+		// Roep de numberColorsGuessed methode aan
+		int numberColorCorrect = numberColorsGuessed(riddle, guess);
+		int[] correctGuesses = { numberFullyCorrect, numberColorCorrect };
+
+		// // TEST***
+		// System.out.println("Riddle: ");
+		// for (int i = 0; i < riddle.length; i++) {
+		// System.out.printf("%d ", riddle[i]);
+		// }
+		// System.out.println("\nGuess: ");
+		// for (int i = 0; i < riddle.length; i++) {
+		// System.out.printf("%d ", guess[i]);
+		// }
+		return correctGuesses;
 	}
 
 	// geeft het aantal goed geraden kleuren (goede kleur, onjuiste positie)
-	public int aantalKleurenGoed(int[] oplossing, int[] gok) {
-		int aantalJuist = 0;
-		for (int i = 0; i < gok.length; i++) {
-			for (int j = 0; j < oplossing.length; j++) {
+	public int numberColorsGuessed(int[] tempRiddle, int[] guess) {
+		int numberColorCorrect = 0;
+		for (int i = 0; i < guess.length; i++) {
+			for (int j = 0; j < tempRiddle.length; j++) {
 				if (i != j) {
-					if (gok[i] == oplossing[j]) {
-						aantalJuist++;
-						oplossing[j] = 66; // OP het moment dat deze kleur al gevonden is, wordt de waarde binnen deze
-											// methode op 66 gezet
+					if (guess[i] == tempRiddle[j]) {
+						numberColorCorrect++;
+						tempRiddle[j] = 66; // OP het moment dat deze kleur al gevonden is, wordt de waarde binnen deze
+						// methode op 66 gezet
 						break;
 					}
 				} else {
@@ -66,35 +87,58 @@ public class MasterMind {
 				}
 			}
 		}
-		return aantalJuist;
+		return numberColorCorrect;
 	}
 
 	public void speelMasterMind() {
-//		CS.setColorFromCalibration(); // TEST MET COLORCALIBRATIE
-		System.out.println("Wil je mastermind spelen, druk dan op de knop!"); // KAN NOG NIET SPELEN BIJ
+		System.out.println("Wil je mastermind spelen? Druk ENTER voor JA en ESCAPE voor NEE");
 		waitForKey(Button.ENTER);
+
 		CS.setFloodLight(true);
 		CS.setFloodLight(6); // TODO NOG FF AAN SLEUTELEN
 		CS.setColorIdMode();
-		
+
 		// creëert een raadsel
-		int[] oplossing = maakOplossing();
+		int[] riddle = createRiddel();
 
 		// Men kan 12 keer raden
 		for (int i = 0; i < 12; i++) {
-			int[] gok = doeGok();
-			int aantalGoedGeraden = aantalGeraden(oplossing, gok);
-			if (aantalGoedGeraden == 4) {
+			// creeer eerst een tijdelijke array
+			int[] tempRiddle = new int[4];
+			for (int j = 0; j < riddle.length; j++) {
+				tempRiddle[j] = riddle[j];
+			}
+			int[] guess = takeAGuess();
+			int[] numberGuessedCorrectly = numbersGuessed(tempRiddle, guess);
+			if (numberGuessedCorrectly[0] == 4) {
 				System.out.println("Gefeliciteerd, je hebt gewonnen!!");
+				Sound.systemSound(true, 2); // Geeft een descending arpeggio
+				Sound.systemSound(true, 2); // Geeft een descending arpeggio
+				Delay.msDelay(5000); // Laat eerst 5 sec zien dat je gewonnen hebt
+				break;
+			} else if (i == 11 && numberGuessedCorrectly[0] != 4) {
+				System.out.println("Helaas, je hebt de kleurencode niet kunnen raden. \nDe kleurencode was: \n");
+				for (int j = 0; j < riddle.length; j++) {
+					System.out.printf("%s ", numberToColor[riddle[j]]);
+					
+				}
+				Sound.systemSound(true, 3); // Geeft een ascending arpeggio
+				Delay.msDelay(5000); // Laat eerst 5 sec zien dat je gewonnen hebt
+				break;
 			} else {
 				System.out.printf(
 						"\nJe hebt %d kleuren goed op je juiste plaats \npJe hebt %d kleuren goed, maar niet op de juiste plaats",
-						aantalGoedGeraden, aantalKleurenGoed(oplossing, gok));
+						numberGuessedCorrectly[0], numberGuessedCorrectly[1]);
 			}
+		}
+		System.out.println("Wil je nog een keer spelen? \nENTER = JA, een andere knop = NEE");
+		Button.waitForAnyPress();
+		if (Button.ENTER.isDown()) {
+			speelMasterMind();
 		}
 	}
 
-	// TODO HIER KUNNEN WE EEN INTERFACE VAN MAKEN
+	// TODO HIER KUNNEN WE EEN INTERFACE VOOR MAKEN
 	public void waitForKey(Key key) {
 		while (key.isUp()) {
 			Delay.msDelay(100);
@@ -103,5 +147,5 @@ public class MasterMind {
 			Delay.msDelay(100);
 		}
 	}
-	
+
 }
