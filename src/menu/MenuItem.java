@@ -1,3 +1,10 @@
+/*
+ * A class for that handles the items (tricks) in a menu. It extends from LinkedList
+ * 
+ * Author: Joey Weidema
+ * 
+ */
+
 package menu;
 
 public class MenuItem extends LinkedList {

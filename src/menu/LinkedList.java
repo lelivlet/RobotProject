@@ -1,3 +1,10 @@
+/*
+ * A linked list class with functional methods.
+ * 
+ * Author: Joey Weidema
+ * 
+ */
+
 package menu;
 
 public class LinkedList {

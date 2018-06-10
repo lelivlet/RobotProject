@@ -1,3 +1,10 @@
+/*
+ * A menu for the tricks; The menu isa linked list.
+ * 
+ * Author: Joey Weidema
+ * 
+ */
+
 package menu;
 
 import lejos.hardware.Button;
