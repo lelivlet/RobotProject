@@ -19,9 +19,16 @@ public class LinkedList {
 			this.value = value;
 		} else if (this.nextElement == null) {
 			this.nextElement = new LinkedList(value);
+			this.nextElement.setPrevious(this);
 		} else {
 			nextElement.add(value);
 		}
+	}
+
+	public void concatList(LinkedList otherList) {
+		int lastIndex = this.size() - 1;
+		LinkedList lastElement = this.getElement(lastIndex);
+		lastElement.setNext(otherList);
 	}
 
 	public boolean contain(String value) {
@@ -41,6 +48,14 @@ public class LinkedList {
 		}
 	}
 
+	public LinkedList getElement(int index) {
+		if (index == 0) {
+			return this;
+		} else {
+			return nextElement.getElement(index - 1);
+		}
+	}
+
 	public LinkedList getNext() {
 		return nextElement;
 	}
@@ -57,6 +72,7 @@ public class LinkedList {
 			} else {
 				this.value = nextElement.get(0);
 				nextElement = nextElement.getNext();
+				this.nextElement.setPrevious(this);
 			}
 			return deletedValue;
 		} else {
@@ -76,6 +92,15 @@ public class LinkedList {
 		this.value = value;
 	}
 
+	public void setNext(LinkedList element) {
+		this.nextElement = element;
+		this.nextElement.setPrevious(this);
+	}
+	
+	public void setPrevious(LinkedList element) {
+		this.previousElement = element;
+	}
+
 	public int size() {
 		if (value == null) {
 			return 0;
@@ -86,4 +111,7 @@ public class LinkedList {
 		}
 	}
 
+	public void wrapList() {
+		concatList(this);
+	}
 }

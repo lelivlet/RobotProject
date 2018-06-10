@@ -5,6 +5,7 @@ import Programmas.MasterMind;
 import lejos.hardware.Button;
 import lejos.hardware.lcd.LCD;
 import lejos.utility.Delay;
+import menu.TrickMenu;
 
 /**
  * @author Joey, Harmen en Jorik
@@ -18,11 +19,15 @@ public class Robot {
 						// en false als de linkerkant de buitenkant is
 
 	// Initialisatie van het bijbehorende bewegingsapparaat, sensor en controller
+
+	// visibility of properties??
 	Bewegingsapparaat bwApparaat = new Bewegingsapparaat(100);
 	PID_Controller pidController = new PID_Controller();
 	ColorSensor CS = new ColorSensor();
 	MasterMind mastermind = new MasterMind(CS);
-	Draw draw = new Draw();
+	
+	private Draw draw = new Draw();
+	private TrickMenu trickMenu = new TrickMenu(this);
 
 	// Constructor
 	public Robot() {
