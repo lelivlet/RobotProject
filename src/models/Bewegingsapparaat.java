@@ -1,10 +1,8 @@
 package models;
 
-import javax.management.MBeanAttributeInfo;
 
 import lejos.hardware.motor.*;
 import lejos.hardware.port.MotorPort;
-import lejos.utility.Delay;
 
 /**
  * @author Jorik en Joey
@@ -32,17 +30,37 @@ public class Bewegingsapparaat {
 
 	// Methodes:
 	/* Beweeg naar voren of naar achteren */
-	public void vooruitOfAchteruit (char voorOfAchter) {
-    	mA.setSpeed(snelheid);
-    	mD.setSpeed(snelheid);
-    	// Geef snelheid in graden/sec
-    	if (voorOfAchter == 'V') {
-    		mA.forward();
-        	mD.forward();
-    	} else if (voorOfAchter == 'A') {
-    		mA.backward();
-        	mD.backward();
-    	}
+	public void vooruitOfAchteruit(char voorOfAchter) {
+		mA.setSpeed(snelheid);
+		mD.setSpeed(snelheid);
+		// Geef snelheid in graden/sec
+		if (voorOfAchter == 'V') {
+			mA.forward();
+			mD.forward();
+		} else if (voorOfAchter == 'A') {
+			mA.backward();
+			mD.backward();
+		}
+	}
+
+	public void forward(int speed) {
+		
+		mA.setSpeed(speed);
+		mD.setSpeed(speed);
+
+		mA.forward();
+		mD.forward();
+	}
+
+	public void turnCircularRight(int speed, double turnFactor) {
+
+		int turningSpeed = (int) (speed * turnFactor);
+
+		mA.setSpeed(turningSpeed);
+		mD.setSpeed(speed);
+
+		mA.forward();
+		mD.forward();
 	}
 
 	// Set engine speed
@@ -64,10 +82,42 @@ public class Bewegingsapparaat {
 		}
 	}
 
+	public void waitComlete() {
+		mA.waitComplete();
+		mD.waitComplete();
+	}
+
+	public void rotateTo(char direction, int degrees) {
+
+		int rotations = degrees * 12;
+
+		if (direction == 'L') {
+
+			// forward positive numbers
+			mA.rotate(rotations);
+			// backward negative numbers
+			mD.rotate(rotations * -1);
+		}
+
+		else if (direction == 'R') {
+
+			// forward positive numbers
+			mA.rotate(rotations * -1);
+			// backward negative numbers
+			mD.rotate(rotations);
+		}
+
+	}
+
 	// Volledige stop methode
 	public void volledigeStop() {
 		mA.stop();
 		mD.stop();
+	}
+
+	public void setRotations(int rotations) {
+		this.mA.rotate(rotations);
+		this.mD.rotate(rotations);
 	}
 
 	public float getSnelheid() {
