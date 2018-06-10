@@ -1,7 +1,7 @@
 /*
  * A linked list class with functional methods.
  * 
- * Author: Joey Weidema
+ * Author: Joey Weidema // Jorik Noorda
  * 
  */
 

@@ -1,7 +1,7 @@
 /*
  * A menu for the tricks; The menu isa linked list.
  * 
- * Author: Joey Weidema
+ * Author: Joey Weidema // Jorik Noorda
  * 
  */
 
