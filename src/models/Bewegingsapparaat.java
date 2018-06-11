@@ -1,7 +1,7 @@
 package models;
 
 import lejos.hardware.motor.*;
-import lejos.hardware.port.MotorPort;
+import lejos.hardware.port.*;
 
 /**
  * @author Jorik en Joey
@@ -13,12 +13,14 @@ public class Bewegingsapparaat {
 	private float snelheid;
 
 	// Motor initialization
-	EV3LargeRegulatedMotor mA = new EV3LargeRegulatedMotor(MotorPort.A);
-	EV3LargeRegulatedMotor mD = new EV3LargeRegulatedMotor(MotorPort.D);
+	private EV3LargeRegulatedMotor mA;
+	private EV3LargeRegulatedMotor mD;
 
 	// no args Constructor
 	public Bewegingsapparaat() {
 		super();
+		this.mA = new EV3LargeRegulatedMotor(MotorPort.A);
+		this.mD = new EV3LargeRegulatedMotor(MotorPort.D);
 	}
 
 	// Constructor met snelheid
@@ -43,7 +45,7 @@ public class Bewegingsapparaat {
 	}
 
 	public void forward(int speed) {
-
+		
 		mA.setSpeed(speed);
 		mD.setSpeed(speed);
 

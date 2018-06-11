@@ -12,7 +12,7 @@ public class MasterMind {
 	private int[] guess = new int[4];
 	private int[] randomToNumber = { 0, 1, 2, 3, 6, 7 };
 	private String[] numberToColor = { "rood", "groen", "blauw", "geel", "", "", "wit", "zwart" };
-	ColorSensor CS;
+	private ColorSensor CS;
 
 	// Constructor
 	public MasterMind(ColorSensor CS) {

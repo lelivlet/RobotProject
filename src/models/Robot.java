@@ -14,24 +14,27 @@ import menu.TrickMenu;
 
 public class Robot {
 	// private fields
-	double defaultSpeed = 200;
-	boolean rightSide; // Deze boolean moet true zijn als de rechter kant de buitenkant van de track is
+	private double defaultSpeed = 200;
+	private boolean rightSide; // Deze boolean moet true zijn als de rechter kant de buitenkant van de track is
 						// en false als de linkerkant de buitenkant is
 
 	// Initialisatie van het bijbehorende bewegingsapparaat, sensor en controller
-
-	// visibility of properties??
-	Bewegingsapparaat bwApparaat = new Bewegingsapparaat(100);
-	PID_Controller pidController = new PID_Controller();
-	ColorSensor CS = new ColorSensor();
-	MasterMind mastermind = new MasterMind(CS);
-	
-	private Draw draw = new Draw();
-	private TrickMenu trickMenu = new TrickMenu(this);
+	private Bewegingsapparaat bwApparaat;
+	private PID_Controller pidController;
+	private ColorSensor CS;
+	private MasterMind mastermind;
+	private Draw draw;
+	private TrickMenu trickMenu;
 
 	// Constructor
 	public Robot() {
 		super();
+		this.bwApparaat = new Bewegingsapparaat(100);
+		this.pidController = new PID_Controller();
+		this.CS = new ColorSensor();
+		this.mastermind = new MasterMind(CS);
+		this.draw = new Draw();
+		this.trickMenu = new TrickMenu(this);
 	}
 
 	// TODO individual engine control
