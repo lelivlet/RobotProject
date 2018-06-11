@@ -94,9 +94,4 @@ public class Robot {
 		return draw;
 	}
 	
-	public Draw getDraw() {
-		return draw;
-	}
-	
-	
 }

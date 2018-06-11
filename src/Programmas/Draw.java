@@ -17,7 +17,7 @@ public class Draw {
 	private final double TURN_FACTOR = 1.75;
 	private final int DELAY = 5000;
 
-	public Draw(Bewegingsapparaat BW) {
+	public Draw(MotionController BW) {
 		this.pathFinder = BW;
 	}
 

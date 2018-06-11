@@ -5,8 +5,8 @@ import lejos.hardware.Key;
 import lejos.hardware.Sound;
 import lejos.robotics.Color;
 import lejos.utility.Delay;
-import models.Bewegingsapparaat;
 import models.ColorSensor;
+import models.MotionController;
 
 public class MasterMind {
 	// 0 = rood, 1 = groen, 2 = blauw, 3 = geel, 6 = wit, 7 = zwart
@@ -14,10 +14,10 @@ public class MasterMind {
 	private int[] randomToNumber = { 0, 1, 2, 3, 6, 7 };
 	private String[] numberToColor = { "rood", "groen", "blauw", "geel", "", "", "wit", "zwart" };
 	private ColorSensor CS;
-	private Bewegingsapparaat BW;
+	private MotionController BW;
 
 	// Constructor
-	public MasterMind(ColorSensor CS, Bewegingsapparaat BW) {
+	public MasterMind(ColorSensor CS, MotionController BW) {
 		super();
 		this.CS = CS;
 		this.BW = BW;
