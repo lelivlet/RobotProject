@@ -26,6 +26,7 @@ public class Robot {
 	private MasterMind mastermind;
 	private Draw draw;
 	private TrickMenu trickMenu;
+	private MusicPlayer musicPlayer;
 
 	// Constructor
 	public Robot() {
@@ -36,6 +37,7 @@ public class Robot {
 		this.mastermind = new MasterMind(CS);
 		this.draw = new Draw();
 		this.trickMenu = new TrickMenu(this);
+		this.musicPlayer = new MusicPlayer();		
 	}
 
 	public void run() { // maak een keuze voor een programma
@@ -92,5 +94,26 @@ public class Robot {
 		return draw;
 	}
 	
+	
+	// TODO: MAke runners for MAstermind; after all runners made, and marvin is one, we can remove the getters above here for tricks. 
+	public void runMusic() {
+		MusicPlayer musicPlayer = new MusicPlayer();
+		musicPlayer.run();
+	}
+	
+	public void initAndRunFollowLine() {
+		FollowLine newFollowline = new FollowLine(pidController, CS, bwApparaat);
+		newFollowline.run();
+	}
+	
+	public void runMasterMind() {
+		LCD.drawString("Bye Felicia", 0, 0);
+		Delay.msDelay(3000);
+	}
+	
+	public void runDraw() {
+		LCD.drawString("Bye Felicia", 0, 0);
+		Delay.msDelay(3000);
+	}
 	
 }
