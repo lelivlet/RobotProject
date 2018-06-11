@@ -20,7 +20,7 @@ public class Robot {
 						// en false als de linkerkant de buitenkant is
 
 	// Initialisatie van het bijbehorende bewegingsapparaat, sensor en controller
-	private Bewegingsapparaat bwApparaat;
+	private MotionController bwApparaat;
 	private PID_Controller pidController;
 	private ColorSensor CS;
 	private MasterMind mastermind;
@@ -30,7 +30,11 @@ public class Robot {
 	// Constructor
 	public Robot() {
 		super();
-		this.bwApparaat = new Bewegingsapparaat(100);
+<<<<<<< Updated upstream
+		this.bwApparaat = new MotionController(100);
+=======
+		this.bwApparaat = new Bewegingsapparaat();
+>>>>>>> Stashed changes
 		this.pidController = new PID_Controller();
 		this.CS = new ColorSensor();
 		this.mastermind = new MasterMind(CS);
@@ -72,7 +76,7 @@ public class Robot {
 	}
 
 	// De getters
-	public Bewegingsapparaat getBwApparaat() {
+	public MotionController getBwApparaat() {
 		return bwApparaat;
 	}
 

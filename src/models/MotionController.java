@@ -8,23 +8,29 @@ import lejos.hardware.port.*;
  *
  */
 
+<<<<<<< Updated upstream:src/models/MotionController.java
+public class MotionController {
+=======
 public class Bewegingsapparaat {
+	
+>>>>>>> Stashed changes:src/models/Bewegingsapparaat.java
 	// Constanten
 	private float snelheid;
-
+	private static final float DEFAULT_SPEED = 100;
 	// Motor initialization
 	private EV3LargeRegulatedMotor mA;
 	private EV3LargeRegulatedMotor mD;
 
 	// no args Constructor
-	public Bewegingsapparaat() {
+	public MotionController() {
 		super();
 		this.mA = new EV3LargeRegulatedMotor(MotorPort.A);
 		this.mD = new EV3LargeRegulatedMotor(MotorPort.D);
+		this.snelheid = DEFAULT_SPEED;
 	}
 
 	// Constructor met snelheid
-	public Bewegingsapparaat(float snelheid) {
+	public MotionController(float snelheid) {
 		super();
 		this.snelheid = snelheid;
 	}

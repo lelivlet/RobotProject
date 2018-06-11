@@ -7,11 +7,11 @@
 package Programmas;
 
 import lejos.utility.Delay;
-import models.Bewegingsapparaat;
+import models.MotionController;
 
 public class Draw {
 
-	Bewegingsapparaat pathFinder = new Bewegingsapparaat();
+	MotionController pathFinder = new MotionController();
 
 	private final int SPEED = 200;
 	private final double TURN_FACTOR = 1.75;

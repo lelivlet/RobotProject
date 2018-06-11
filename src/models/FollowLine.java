@@ -13,7 +13,7 @@ public class FollowLine {
 
 	PID_Controller pidController;
 	ColorSensor CS;
-	BewegingsApparaat bwApparaat;
+	MotionController bwApparaat;
 
 	// default istellingen
 	private static final float SPEED_DEFAULT = (float) 100;
@@ -36,13 +36,13 @@ public class FollowLine {
 	// test instellingen
 	private float speedTest = (float) 375;
 	private float kpTest = (float) 1.4;
-	private float kiTest = (float) 0;
+	private float kiTest = (float) 0.5;
 	private float kdTest = (float) 2.3;
 
 	// variabele om te kijken welke kant de robot oprijdt
 	boolean rightSide;
 
-	public FollowLine(PID_Controller pidController, ColorSensor CS, BewegingsApparaat bwApparaat) {
+	public FollowLine(PID_Controller pidController, ColorSensor CS, MotionController bwApparaat) {
 		super();
 		this.pidController = pidController;
 		this.CS = CS;
