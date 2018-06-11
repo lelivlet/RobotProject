@@ -119,8 +119,8 @@ public class MotionController {
 	}
 
 	public void setRotations(int rotations) {
-		this.mA.rotate(rotations);
-		this.mD.rotate(rotations);
+		this.mA.rotate(rotations, true);
+		this.mD.rotate(rotations, true);
 	}
 
 	public float getSnelheid() {

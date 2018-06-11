@@ -51,7 +51,7 @@ public class TrickMenu {
 		LCD.drawString(((MenuItem) (currentItem.getPrevious())).trickName, 0, 1);
 		LCD.drawString("    /\\", 0, 2);
 		LCD.drawString(currentItem.trickName.toUpperCase(), 0, 3);
-		LCD.drawString("   \\/", 0, 4);
+		LCD.drawString("    \\/", 0, 4);
 		LCD.drawString(((MenuItem) (currentItem.getNext())).trickName, 0, 5);
 	}
 
@@ -132,8 +132,10 @@ public class TrickMenu {
 	}
 
 	public void runDraw() {
-		System.out.printf("testing %s %s ", valueThirdTrick, nameThirdTrick);
+		//System.out.printf("testing %s %s ", valueThirdTrick, nameThirdTrick);
 		// robot.getDraw().drawCircle();
+		LCD.clear();
+		LCD.drawString("Bye Felicia", 0, 0);
 	}
 
 }
