@@ -5,6 +5,7 @@ import lejos.hardware.Key;
 import lejos.hardware.Sound;
 import lejos.robotics.Color;
 import lejos.utility.Delay;
+import models.Bewegingsapparaat;
 import models.ColorSensor;
 
 public class MasterMind {
@@ -13,15 +14,17 @@ public class MasterMind {
 	private int[] randomToNumber = { 0, 1, 2, 3, 6, 7 };
 	private String[] numberToColor = { "rood", "groen", "blauw", "geel", "", "", "wit", "zwart" };
 	private ColorSensor CS;
+	private Bewegingsapparaat BW;
 
 	// Constructor
-	public MasterMind(ColorSensor CS) {
+	public MasterMind(ColorSensor CS, Bewegingsapparaat BW) {
 		super();
 		this.CS = CS;
+		this.BW = BW;
 	}
 
 	// Creëer een random raadsel
-	public int[] createRiddel() { // Naamgeving kan anders
+	public int[] createRiddle() { // Naamgeving kan anders
 		int[] riddle = new int[4];
 		for (int i = 0; i < riddle.length; i++) {
 			int randomNumber = ((int) (Math.random() * 6));
@@ -33,12 +36,25 @@ public class MasterMind {
 
 	// doe 1 keer 4 enkele gokjes (dus 1 beurt als het ware)
 	public int[] takeAGuess() {
-		for (int i = 0; i < guess.length; i++) {
-			System.out.println("Doe gok " + (i + 1) + " onder  de sensor");
-			waitForKey(Button.ENTER);
+		// Plaats op de stip
+		System.out.println("Positioneer de Robot op de zwarte stip en druk op ENTER");
+		waitForKey(Button.ENTER);
+		
+		// Vanaf stip naar eerste meting rijden
+		BW.setRotations(BW.getRotationDegreesFromLength(4.5));
+
+		/* Lees kleuren in en rij verder */
+		for (int i = 0; i < guess.length; i++) {		
+			// Lees de kleur in
 			guess[i] = CS.getColorID();
-			int test = guess[i]; // TEST***
-			System.out.println(numberToColor[test]); // TEST***
+			// Schrijf op display wat er gemeten is
+			int test = guess[i];
+			System.out.println(numberToColor[test]);
+			
+			//Rijdt door naar de volgende positie
+			if(i < guess.length-1) {
+				BW.setRotations(BW.getRotationDegreesFromLength(6.15));
+			}
 		}
 		return guess;
 	}
@@ -50,8 +66,8 @@ public class MasterMind {
 		for (int i = 0; i < riddle.length; i++) {
 			if (guess[i] == riddle[i]) {
 				numberFullyCorrect++;
-				riddle[i] = 66;
-				guess[i] = 99;
+				riddle[i] = 66; // TODO
+				guess[i] = 99; // TODO
 			}
 		}
 		// Roep de numberColorsGuessed methode aan
@@ -88,7 +104,7 @@ public class MasterMind {
 			}
 		}
 		return numberColorCorrect;
-	}
+	}	
 
 	public void speelMasterMind() {
 		System.out.println("Wil je mastermind spelen? Druk ENTER voor JA en ESCAPE voor NEE");
@@ -99,7 +115,7 @@ public class MasterMind {
 		CS.setColorIdMode();
 
 		// creëert een raadsel
-		int[] riddle = createRiddel();
+		int[] riddle = createRiddle();
 
 		// Men kan 12 keer raden
 		for (int i = 0; i < 12; i++) {
@@ -137,6 +153,8 @@ public class MasterMind {
 			speelMasterMind();
 		}
 	}
+	
+	
 
 	// TODO HIER KUNNEN WE EEN INTERFACE VOOR MAKEN
 	public void waitForKey(Key key) {

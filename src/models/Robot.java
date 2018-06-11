@@ -17,7 +17,7 @@ public class Robot {
 	// private fields
 	private double defaultSpeed = 200;
 	private boolean rightSide; // Deze boolean moet true zijn als de rechter kant de buitenkant van de track is
-						// en false als de linkerkant de buitenkant is
+								// en false als de linkerkant de buitenkant is
 
 	// Initialisatie van het bijbehorende bewegingsapparaat, sensor en controller
 	private Bewegingsapparaat bwApparaat;
@@ -30,11 +30,11 @@ public class Robot {
 	// Constructor
 	public Robot() {
 		super();
-		this.bwApparaat = new Bewegingsapparaat(100);
+		this.bwApparaat = new Bewegingsapparaat();
 		this.pidController = new PID_Controller();
 		this.CS = new ColorSensor();
-		this.mastermind = new MasterMind(CS);
-		this.draw = new Draw();
+		this.mastermind = new MasterMind(CS, bwApparaat);
+		this.draw = new Draw(bwApparaat);
 		this.trickMenu = new TrickMenu(this);
 	}
 
@@ -59,6 +59,8 @@ public class Robot {
 			musicPlayer.run();
 		}
 	}
+	
+	// 
 
 	public void close() {
 		// sluit de motoren en sensor af
@@ -87,7 +89,9 @@ public class Robot {
 	public MasterMind getMastermind() {
 		return mastermind;
 	}
-	
-	
+
+	public Draw getDraw() {
+		return draw;
+	}
 	
 }

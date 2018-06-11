@@ -11,16 +11,14 @@ import models.Bewegingsapparaat;
 
 public class Draw {
 
-	Bewegingsapparaat pathFinder = new Bewegingsapparaat();
+	Bewegingsapparaat pathFinder;
 
 	private final int SPEED = 200;
 	private final double TURN_FACTOR = 1.75;
 	private final int DELAY = 5000;
-	private final double DIAMETER = 4;
-	private final double CIRCUMFERENCE = DIAMETER * Math.PI;
 
-	public Draw() {
-
+	public Draw(Bewegingsapparaat BW) {
+		this.pathFinder = BW;
 	}
 
 	// A method to draw a circle
@@ -43,7 +41,7 @@ public class Draw {
 			// pathFinder.forward(SPEED);
 			pathFinder.setEngineSpeed(SPEED, SPEED);
 	
-			pathFinder.setRotations(getRotationDegreesFromLength(length));
+			pathFinder.setRotations(pathFinder.getRotationDegreesFromLength(length));
 			// Delay.msDelay(length);
 	
 			pathFinder.waitComlete();
@@ -61,7 +59,7 @@ public class Draw {
 			// pathFinder.forward(SPEED);
 			pathFinder.setEngineSpeed(SPEED, SPEED);
 
-			pathFinder.setRotations(getRotationDegreesFromLength(length));
+			pathFinder.setRotations(pathFinder.getRotationDegreesFromLength(length));
 
 			pathFinder.waitComlete();
 
@@ -78,13 +76,5 @@ public class Draw {
 
 	public void drawConcentricSpiral() {
 
-	}
-
-	// A method to transform rotations to actual length (distance) in cm
-	public int getRotationDegreesFromLength(double length) {
-	
-		double rotations = length / CIRCUMFERENCE;
-	
-		return (int) (rotations * 360);
 	}
 }

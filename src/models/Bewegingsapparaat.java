@@ -16,6 +16,10 @@ public class Bewegingsapparaat {
 	private EV3LargeRegulatedMotor mA;
 	private EV3LargeRegulatedMotor mD;
 
+	// Wiel-eigenschappen
+	private final double DIAMETER = 4.2;
+	private final double CIRCUMFERENCE = DIAMETER * Math.PI;
+
 	// no args Constructor
 	public Bewegingsapparaat() {
 		super();
@@ -45,7 +49,7 @@ public class Bewegingsapparaat {
 	}
 
 	public void forward(int speed) {
-		
+
 		mA.setSpeed(speed);
 		mD.setSpeed(speed);
 
@@ -109,7 +113,12 @@ public class Bewegingsapparaat {
 			// backward negative numbers
 			mD.rotate(rotations);
 		}
+	}
 
+	// A method to transform rotations to actual length (distance) in cm
+	public int getRotationDegreesFromLength(double length) {
+		double rotations = length / CIRCUMFERENCE;
+		return (int) (rotations * 360);
 	}
 
 	// Volledige stop methode
@@ -119,8 +128,8 @@ public class Bewegingsapparaat {
 	}
 
 	public void setRotations(int rotations) {
-		this.mA.rotate(rotations);
-		this.mD.rotate(rotations);
+		this.mA.rotate(rotations, true);
+		this.mD.rotate(rotations, true);
 	}
 
 	public float getSnelheid() {
