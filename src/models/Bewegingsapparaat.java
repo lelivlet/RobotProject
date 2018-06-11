@@ -1,6 +1,5 @@
 package models;
 
-
 import lejos.hardware.motor.*;
 import lejos.hardware.port.MotorPort;
 
@@ -44,7 +43,7 @@ public class Bewegingsapparaat {
 	}
 
 	public void forward(int speed) {
-		
+
 		mA.setSpeed(speed);
 		mD.setSpeed(speed);
 
@@ -52,6 +51,7 @@ public class Bewegingsapparaat {
 		mD.forward();
 	}
 
+	// A method to make a circle.
 	public void turnCircularRight(int speed, double turnFactor) {
 
 		int turningSpeed = (int) (speed * turnFactor);
@@ -87,6 +87,7 @@ public class Bewegingsapparaat {
 		mD.waitComplete();
 	}
 
+	// A method to transform rotations to degrees and then rotate to
 	public void rotateTo(char direction, int degrees) {
 
 		int rotations = degrees * 12;
