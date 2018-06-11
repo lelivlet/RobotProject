@@ -19,6 +19,7 @@ public class Draw {
 	private final double DIAMETER = 4;
 	private final double CIRCUMFERENCE = DIAMETER * Math.PI;
 
+	// default no-args constructor
 	public Draw() {
 
 	}
@@ -48,7 +49,7 @@ public class Draw {
 	
 			pathFinder.waitComlete();
 	
-			pathFinder.rotateTo('R', 36);
+			pathFinder.rotateTo('R', 36); // poot pentagram = 36 graden, hij draait naar rechts
 		}
 		// insert the tune here
 	}
