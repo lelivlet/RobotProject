@@ -88,6 +88,9 @@ public class Robot {
 		return mastermind;
 	}
 	
+	public Draw getDraw() {
+		return draw;
+	}
 	
 	
 }

@@ -46,7 +46,7 @@ public class Draw {
 			pathFinder.setRotations(getRotationDegreesFromLength(length));
 			// Delay.msDelay(length);
 	
-			pathFinder.waitComlete();
+			pathFinder.waitComplete();
 	
 			pathFinder.rotateTo('R', 36);
 		}
@@ -63,7 +63,7 @@ public class Draw {
 
 			pathFinder.setRotations(getRotationDegreesFromLength(length));
 
-			pathFinder.waitComlete();
+			pathFinder.waitComplete();
 
 			// Delay.msDelay(length);
 

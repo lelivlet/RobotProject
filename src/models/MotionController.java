@@ -84,7 +84,7 @@ public class MotionController {
 		}
 	}
 
-	public void waitComlete() {
+	public void waitComplete() {
 		mA.waitComplete();
 		mD.waitComplete();
 	}
