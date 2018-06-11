@@ -8,7 +8,7 @@ import lejos.hardware.port.*;
  *
  */
 
-public class Bewegingsapparaat {
+public class MotionController {
 	// Constanten
 	private float snelheid;
 
@@ -17,14 +17,14 @@ public class Bewegingsapparaat {
 	private EV3LargeRegulatedMotor mD;
 
 	// no args Constructor
-	public Bewegingsapparaat() {
+	public MotionController() {
 		super();
 		this.mA = new EV3LargeRegulatedMotor(MotorPort.A);
 		this.mD = new EV3LargeRegulatedMotor(MotorPort.D);
 	}
 
 	// Constructor met snelheid
-	public Bewegingsapparaat(float snelheid) {
+	public MotionController(float snelheid) {
 		super();
 		this.snelheid = snelheid;
 	}
@@ -84,7 +84,7 @@ public class Bewegingsapparaat {
 		}
 	}
 
-	public void waitComlete() {
+	public void waitComplete() {
 		mA.waitComplete();
 		mD.waitComplete();
 	}
