@@ -1,10 +1,7 @@
 package models;
 
-import javax.management.MBeanAttributeInfo;
-
 import lejos.hardware.motor.*;
 import lejos.hardware.port.MotorPort;
-import lejos.utility.Delay;
 
 /**
  * @author Jorik en Joey
@@ -45,16 +42,25 @@ public class Bewegingsapparaat {
 		}
 	}
 
-	public void reverseOpposite(char richting) {
-		mA.setSpeed(100);
-		mD.setSpeed(100);
-		if (richting == 'L') {
-			mA.backward();
-			mD.forward();
-		} else if (richting == 'R') {
-			mA.forward();
-			mD.backward();
-		}
+	public void forward(int speed) {
+
+		mA.setSpeed(speed);
+		mD.setSpeed(speed);
+
+		mA.forward();
+		mD.forward();
+	}
+
+	// A method to make a circle.
+	public void turnCircularRight(int speed, double turnFactor) {
+
+		int turningSpeed = (int) (speed * turnFactor);
+
+		mA.setSpeed(turningSpeed);
+		mD.setSpeed(speed);
+
+		mA.forward();
+		mD.forward();
 	}
 
 	// Set engine speed
@@ -76,10 +82,43 @@ public class Bewegingsapparaat {
 		}
 	}
 
+	public void waitComlete() {
+		mA.waitComplete();
+		mD.waitComplete();
+	}
+
+	// A method to transform rotations to degrees and then rotate to
+	public void rotateTo(char direction, int degrees) {
+
+		int rotations = degrees * 12;
+
+		if (direction == 'L') {
+
+			// forward positive numbers
+			mA.rotate(rotations);
+			// backward negative numbers
+			mD.rotate(rotations * -1);
+		}
+
+		else if (direction == 'R') {
+
+			// forward positive numbers
+			mA.rotate(rotations * -1);
+			// backward negative numbers
+			mD.rotate(rotations);
+		}
+
+	}
+
 	// Volledige stop methode
 	public void volledigeStop() {
 		mA.stop();
 		mD.stop();
+	}
+
+	public void setRotations(int rotations) {
+		this.mA.rotate(rotations);
+		this.mD.rotate(rotations);
 	}
 
 	public float getSnelheid() {

@@ -1,9 +1,11 @@
 package models;
 
+import Programmas.Draw;
 import Programmas.MasterMind;
 import lejos.hardware.Button;
 import lejos.hardware.lcd.LCD;
 import lejos.utility.Delay;
+import menu.TrickMenu;
 
 /**
  * @author Joey, Harmen en Jorik
@@ -17,10 +19,15 @@ public class Robot {
 						// en false als de linkerkant de buitenkant is
 
 	// Initialisatie van het bijbehorende bewegingsapparaat, sensor en controller
+
+	// visibility of properties??
 	Bewegingsapparaat bwApparaat = new Bewegingsapparaat(100);
 	PID_Controller pidController = new PID_Controller();
 	ColorSensor CS = new ColorSensor();
 	MasterMind mastermind = new MasterMind(CS);
+	
+	private Draw draw = new Draw();
+	private TrickMenu trickMenu = new TrickMenu(this);
 
 	// Constructor
 	public Robot() {
@@ -30,17 +37,19 @@ public class Robot {
 	// TODO individual engine control
 	public void volgLijn() {
 		float currentBrightness;
-		// Hier kan de Kp van de controller aangepast worden om sneller of langzamer te draaien.
-		pidController.setKp((float)2);
-		pidController.setKd((float)0.2);
+		// Hier kan de Kp van de controller aangepast worden om sneller of langzamer te
+		// draaien.
+		pidController.setKp((float) 2);
+		pidController.setKd((float) 0.2);
 
 		// Calibratie aanvraag
 		CS.setBlackWhiteFromCalibration();
 		Delay.msDelay(500);
-		
+
 		// Zo lang de knop niet ingedrukt is, begint het programma niet
 		LCD.drawString("Press Enter to begin", 0, 0);
-		while (Button.ENTER.isUp()) {	}
+		while (Button.ENTER.isUp()) {
+		}
 		LCD.clear();
 		Delay.msDelay(500);
 
@@ -88,7 +97,9 @@ public class Robot {
 	public MasterMind getMastermind() {
 		return mastermind;
 	}
-	
-	
-	
+
+	public Draw getDraw() {
+		return draw;
+	}
+
 }

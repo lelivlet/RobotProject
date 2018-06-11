@@ -1,58 +1,90 @@
+/*
+ * A class that enables the drawing of shapes. 
+ * 
+ * Author: Veronique Roelvink en Joey Weidema
+ */
+
 package Programmas;
 
-import lejos.hardware.Button;
 import lejos.utility.Delay;
 import models.Bewegingsapparaat;
 
-/**
- * @author Véronique en Joey Doel programma: in de as van de robot bevestigen we
- *         een pen, die figuren kan tekenen.
- *
- */
 public class Draw {
 
-	// attributes
-	// private static final double diameter = 4.1;
+	Bewegingsapparaat pathFinder = new Bewegingsapparaat();
 
-	Bewegingsapparaat bwApparaat = new Bewegingsapparaat(100);
+	private final int SPEED = 200;
+	private final double TURN_FACTOR = 1.75;
+	private final int DELAY = 5000;
+	private final double DIAMETER = 4;
+	private final double CIRCUMFERENCE = DIAMETER * Math.PI;
 
-	// default constructor no-args
 	public Draw() {
-		super();
+
 	}
 
-	// methods
+	// A method to draw a circle
+	
+					// calibrate turnfactor etc
+	public void drawCircle() {
 
-	// methode draw square
-	public void makeSquare() {
-		Button.waitForAnyPress();
+		pathFinder.turnCircularRight(SPEED, TURN_FACTOR);
 
-		// uit class Robot methode bwApparaat
-		// uit class Bewegingsapparaat methodes vooruitOfAchteruit, volledigeStop,
-		// reverseOpposite
+		Delay.msDelay(DELAY);
 
-		for (int i = 0; i < 4; i++) {
-
-			// 4 voor 4 hoeken
-			// ga vooruit gedurende 2 seconden, stop, draai naar rechts gedurende 1,5
-			// seconden, stop, ga vooruit
-			bwApparaat.vooruitOfAchteruit('V');
-			Delay.msDelay(2000);
-			bwApparaat.volledigeStop();
-
-			bwApparaat.reverseOpposite('R');
-			Delay.msDelay(1500);
-			bwApparaat.volledigeStop();
-
-			bwApparaat.vooruitOfAchteruit('V');
+		pathFinder.volledigeStop();
+	}
+	
+	// A method to draw a pentagram
+	public void drawPentagram(int length) {
+	
+		for (int i = 0; i < 5; i++) {
+	
+			// pathFinder.forward(SPEED);
+			pathFinder.setEngineSpeed(SPEED, SPEED);
+	
+			pathFinder.setRotations(getRotationDegreesFromLength(length));
+			// Delay.msDelay(length);
+	
+			pathFinder.waitComlete();
+	
+			pathFinder.rotateTo('R', 36);
 		}
-		bwApparaat.close();
+		// insert the tune here
 	}
-	// public void make
-	//
-	// Circle() {
-	// Button.waitForAnyPress();
-	//
-	// for (int i = 0; i = )
-	// }
+
+	// A method to draw a triangle
+	public void drawTriangle(double length) {
+
+		for (int i = 0; i < 3; i++) {
+
+			// pathFinder.forward(SPEED);
+			pathFinder.setEngineSpeed(SPEED, SPEED);
+
+			pathFinder.setRotations(getRotationDegreesFromLength(length));
+
+			pathFinder.waitComlete();
+
+			// Delay.msDelay(length);
+
+			pathFinder.rotateTo('R', 60);
+		}
+		pathFinder.close();
+	}
+
+	public void drawCrown(int length) {
+
+	}
+
+	public void drawConcentricSpiral() {
+
+	}
+
+	// A method to transform rotations to actual length (distance) in cm
+	public int getRotationDegreesFromLength(double length) {
+	
+		double rotations = length / CIRCUMFERENCE;
+	
+		return (int) (rotations * 360);
+	}
 }
