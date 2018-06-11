@@ -7,11 +7,11 @@
 package Programmas;
 
 import lejos.utility.Delay;
-import models.Bewegingsapparaat;
+import models.MotionController;
 
 public class Draw {
 
-	Bewegingsapparaat pathFinder;
+	MotionController pathFinder = new MotionController();
 
 	private final int SPEED = 200;
 	private final double TURN_FACTOR = 1.75;
@@ -44,9 +44,9 @@ public class Draw {
 			pathFinder.setRotations(pathFinder.getRotationDegreesFromLength(length));
 			// Delay.msDelay(length);
 	
-			pathFinder.waitComlete();
+			pathFinder.waitComplete();
 	
-			pathFinder.rotateTo('R', 36);
+			pathFinder.rotateTo('R', 36); // poot pentagram = 36 graden, hij draait naar rechts
 		}
 		// insert the tune here
 	}
@@ -61,7 +61,7 @@ public class Draw {
 
 			pathFinder.setRotations(pathFinder.getRotationDegreesFromLength(length));
 
-			pathFinder.waitComlete();
+			pathFinder.waitComplete();
 
 			// Delay.msDelay(length);
 

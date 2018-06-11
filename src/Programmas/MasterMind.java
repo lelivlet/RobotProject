@@ -41,6 +41,7 @@ public class MasterMind {
 		waitForKey(Button.ENTER);
 		
 		// Vanaf stip naar eerste meting rijden
+		// TODO TACHOMETER! 
 		BW.setRotations(BW.getRotationDegreesFromLength(4.5));
 
 		/* Lees kleuren in en rij verder */
