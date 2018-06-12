@@ -36,7 +36,7 @@ public class FollowLine {
 	// test instellingen
 	private float speedTest = (float) 375;
 	private float kpTest = (float) 1.4;
-	private float kiTest = (float) 0;
+	private float kiTest = (float) 0.5;
 	private float kdTest = (float) 2.3;
 
 	// variabele om te kijken welke kant de robot oprijdt
