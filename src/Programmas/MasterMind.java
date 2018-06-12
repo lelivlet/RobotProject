@@ -22,6 +22,9 @@ public class MasterMind {
 		this.CS = CS;
 		this.BW = BW;
 	}
+	
+	// TODO MISSCHIEN WAT MOOIER WEERGEVEN OP DE BRICK!!
+	
 
 	// Creëer een random raadsel
 	public int[] createRiddle() { // Naamgeving kan anders
@@ -40,23 +43,44 @@ public class MasterMind {
 		System.out.println("Positioneer de Robot op de zwarte stip en druk op ENTER");
 		waitForKey(Button.ENTER);
 		
-		// Vanaf stip naar eerste meting rijden
-		// TODO TACHOMETER! 
-		BW.setRotations(BW.getRotationDegreesFromLength(4.5));
-
 		/* Lees kleuren in en rij verder */
-		for (int i = 0; i < guess.length; i++) {		
-			// Lees de kleur in
-			guess[i] = CS.getColorID();
-			// Schrijf op display wat er gemeten is
-			int test = guess[i];
-			System.out.println(numberToColor[test]);
-			
-			//Rijdt door naar de volgende positie
-			if(i < guess.length-1) {
-				BW.setRotations(BW.getRotationDegreesFromLength(6.15));
+		for (int i = 0; i < guess.length; i++) {
+			if(i == 0) {
+				// Beweeg naar eerste meetpunt
+				BW.setRotations(BW.getRotationDegreesFromLength(4.5));
+				BW.waitComplete();
+				// Lees de kleur in
+				guess[i] = CS.getColorID();
+				
+				// TODO IS NIET HEEL NETJES! (Kan eventueel ook een muziekje of toontje??)
+				// Heel soms wordt geel aangegeven als 13 (bruin) daarom hebben we deze failsafe ingebouwd
+				if(guess[i] == 13) {
+					guess[i] = 3;
+				}
+				
+				int test = guess[i];
+				// Schrijf op display wat er gemeten is
+				System.out.println(numberToColor[test]);
+			} else if(i > 0 && i < guess.length) {
+				BW.setRotations(BW.getRotationDegreesFromLength(6.5));
+				BW.waitComplete();
+				// Lees de kleur in
+				guess[i] = CS.getColorID();
+				
+				// TODO IS NIET HEEL NETJES!
+				// Heel soms wordt geel aangegeven als 13 (bruin) daarom hebben we deze failsafe ingebouwd
+				if(guess[i] == 13) {
+					guess[i] = 3;
+				}
+				
+				int test = guess[i];
+				// Schrijf op display wat er gemeten is
+				System.out.println(numberToColor[test]);
 			}
 		}
+		// Rij terug en geef de guess terug
+		BW.setRotations(BW.getRotationDegreesFromLength(-(4.5+(3*6.5))));
+		BW.waitComplete();
 		return guess;
 	}
 
@@ -107,7 +131,7 @@ public class MasterMind {
 		return numberColorCorrect;
 	}	
 
-	public void speelMasterMind() {
+	public void playMasterMind() {
 		System.out.println("Wil je mastermind spelen? Druk ENTER voor JA en ESCAPE voor NEE");
 		waitForKey(Button.ENTER);
 
@@ -125,6 +149,7 @@ public class MasterMind {
 			for (int j = 0; j < riddle.length; j++) {
 				tempRiddle[j] = riddle[j];
 			}
+			System.out.printf("Ronde #%d\n", i); // TODO kan ook van 12 naar 1
 			int[] guess = takeAGuess();
 			int[] numberGuessedCorrectly = numbersGuessed(tempRiddle, guess);
 			if (numberGuessedCorrectly[0] == 4) {
@@ -151,7 +176,7 @@ public class MasterMind {
 		System.out.println("Wil je nog een keer spelen? \nENTER = JA, een andere knop = NEE");
 		Button.waitForAnyPress();
 		if (Button.ENTER.isDown()) {
-			speelMasterMind();
+			playMasterMind();
 		}
 	}
 	

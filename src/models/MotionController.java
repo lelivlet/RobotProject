@@ -29,7 +29,7 @@ public class MotionController {
 
 	// Constructor met snelheid
 	public MotionController(float snelheid) {
-		super();
+		this();
 		this.snelheid = snelheid;
 	}
 

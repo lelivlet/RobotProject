@@ -30,7 +30,7 @@ public class Robot {
 	// Constructor
 	public Robot() {
 		super();
-		this.bwApparaat = new MotionController(100);
+		this.bwApparaat = new MotionController();
 		this.pidController = new PID_Controller();
 		this.CS = new ColorSensor();
 		this.mastermind = new MasterMind(CS, bwApparaat);

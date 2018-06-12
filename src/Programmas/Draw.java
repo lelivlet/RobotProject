@@ -13,7 +13,7 @@ import models.MotionController;
 public class Draw {
 	
 	// nieuwe MotionController aanmaken, noemen we pathFinder
-	MotionController pathFinder = new MotionController();
+	MotionController pathFinder;
 
 	private final int SPEED = 200;
 	private final double TURN_FACTOR = 1.75;
@@ -54,8 +54,7 @@ public class Draw {
 	}
 	
 	// A method to draw a circle
-	
-					// calibrate turnfactor etc
+	// calibrate turnfactor etc
 	public void drawCircle() {
 
 		pathFinder.turnCircularRight(SPEED, TURN_FACTOR);
