@@ -7,20 +7,19 @@ import java.io.File;
 
 import Programmas.MusicPlayer;
 import Programmas.PlayList;
+import Programmas.Song;
 import lejos.hardware.Sound;
 import lejos.hardware.lcd.LCD;
 import lejos.utility.Delay;
 import menu.TrickMenu;
 import lejos.utility.TextMenu;
 
+
 public class Robot {
 	// private fields
-	private double defaultSpeed = 200;
-	private boolean rightSide; // Deze boolean moet true zijn als de rechter kant de buitenkant van de track is
-						// en false als de linkerkant de buitenkant is
-
+	
 	// Initialisatie van het bijbehorende bewegingsapparaat, sensor en controller
-	private MotionController bwApparaat;
+	private MotionController motionController;
 	private PID_Controller pidController;
 	private ColorSensor CS;
 	private MasterMind mastermind;
@@ -30,12 +29,12 @@ public class Robot {
 	// Constructor
 	public Robot() {
 		super();
-		this.bwApparaat = new MotionController(100);
+		this.motionController = new MotionController();
 		this.pidController = new PID_Controller();
 		this.CS = new ColorSensor();
-		this.mastermind = new MasterMind(CS);
-		this.draw = new Draw();
-		this.trickMenu = new TrickMenu(this);
+//		this.mastermind = new MasterMind(CS);
+//		this.draw = new Draw();
+//		this.trickMenu = new TrickMenu(this);
 	}
 
 	public void run() { // maak een keuze voor een programma
@@ -44,8 +43,30 @@ public class Robot {
 		TextMenu selectMenu = new TextMenu(items, 2, "Wat wil je doen?");
 		int selectedItem = selectMenu.select();
 		if (selectedItem == 0) {
-			FollowLine newFollowline = new FollowLine(pidController, CS, bwApparaat);
-			newFollowline.run();
+			
+			PlayList playlist = new MusicPlayer().getPlaylist();
+			Song song1 = new Song("Carnaval festival", new File("carnaval_festival.wav"));
+			playlist.getSongs().add(song1);
+			Song song2 = new Song("Mission Impossible", new File("mission_impossible.wav"));
+			playlist.getSongs().add(song2);
+			Song song3 = new Song("Star Wars", new File("star_wars.wav"));
+			playlist.getSongs().add(song3);
+			
+			FollowLine followline1 = new FollowLine(pidController, CS, motionController);
+			followline1.calibrate();
+			
+			Runnable playlist1 = playlist;
+			Runnable followLine2 = new FollowLine(pidController, CS, motionController);
+									
+			Thread thread1 = new Thread(playlist1);
+			Delay.msDelay(500);
+			Thread thread2 = new Thread(followLine2);
+			
+						
+			// Start threads
+			thread1.start();
+			thread2.start();
+			
 		} else if (selectedItem == 1) {
 			// TODO
 			// Mastermind mastermind = = new MasterMind(CS);
@@ -60,34 +81,6 @@ public class Robot {
 		}
 	}
 
-	public void close() {
-		// sluit de motoren en sensor af
-		bwApparaat.close();
-		CS.close();
-	}
-
-	// Set de rightSide op true of false om zo de richting aan te geven
-	public void setRightSide(boolean rightSide) {
-		this.rightSide = rightSide;
-	}
-
-	// De getters
-	public MotionController getBwApparaat() {
-		return bwApparaat;
-	}
-
-	public PID_Controller getPidController() {
-		return pidController;
-	}
-
-	public ColorSensor getCS() {
-		return CS;
-	}
-
-	public MasterMind getMastermind() {
-		return mastermind;
-	}
-	
 	
 	
 }
