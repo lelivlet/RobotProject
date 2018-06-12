@@ -33,8 +33,8 @@ public class Robot {
 		this.motionController = new MotionController();
 		this.pidController = new PID_Controller();
 		this.CS = new ColorSensor();
-		this.mastermind = new MasterMind(CS, bwApparaat);
-		this.draw = new Draw(bwApparaat);
+		this.mastermind = new MasterMind(CS, motionController);
+		this.draw = new Draw(motionController);
 		this.trickMenu = new TrickMenu(this);
 		this.musicPlayer = new MusicPlayer();		
 	}
@@ -75,7 +75,7 @@ public class Robot {
 			// mastermind.run();
 		} else if (selectedItem == 2) {
 			// TODO
-			// Draw draw = new Draw(bwApparaat);
+			// Draw draw = new Draw(motionController);
 			// draw.run();
 		} else if (selectedItem == 3) {
 			MusicPlayer musicPlayer = new MusicPlayer();
@@ -98,13 +98,12 @@ public class Robot {
 	}
 	
 	public void initAndRunFollowLine() {
-		FollowLine newFollowline = new FollowLine(pidController, CS, bwApparaat);
+		FollowLine newFollowline = new FollowLine(pidController, CS, motionController);
 		newFollowline.run();
 	}
 	
 	public void runMasterMind() {
-		LCD.drawString("Bye Felicia", 0, 0);
-		Delay.msDelay(3000);
+		mastermind.playMasterMind();
 	}
 	
 	public void runDraw() {

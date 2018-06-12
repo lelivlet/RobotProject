@@ -130,12 +130,4 @@ public class Draw {
 	public void drawConcentricSpiral() {
 
 	}
-
-	// A method to transform rotations to actual length (distance) in cm
-	public int getRotationDegreesFromLength(double length) {
-	
-		double rotations = length / CIRCUMFERENCE;
-	
-		return (int) (rotations * 360);
-	}
 }
