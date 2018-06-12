@@ -21,6 +21,8 @@ public class TrickMenu {
 	private final String nameSecondTrick = "Master Mind";
 	private final String valueThirdTrick = "DR";
 	private final String nameThirdTrick = "Draw";
+	private final String valueFourthTrick = "MP";
+	private final String nameFourthTrick = "Music Player";
 
 	MenuItem menuItems;
 	Robot robot;
@@ -32,10 +34,13 @@ public class TrickMenu {
 		MenuItem firstItem = new MenuItem(valueFirstTrick, nameFirstTrick);
 		MenuItem secondItem = new MenuItem(valueSecondTrick, nameSecondTrick);
 		MenuItem thirdItem = new MenuItem(valueThirdTrick, nameThirdTrick);
+		MenuItem fourthItem = new MenuItem(valueFourthTrick, nameFourthTrick);
 
 		// linking elements
 		firstItem.setNext(secondItem);
 		secondItem.setNext(thirdItem);
+		thirdItem.setNext(fourthItem);
+		
 		// wrapping list
 		firstItem.wrapList();
 
@@ -51,7 +56,7 @@ public class TrickMenu {
 		LCD.drawString(((MenuItem) (currentItem.getPrevious())).trickName, 0, 1);
 		LCD.drawString("    /\\", 0, 2);
 		LCD.drawString(currentItem.trickName.toUpperCase(), 0, 3);
-		LCD.drawString("   \\/", 0, 4);
+		LCD.drawString("    \\/", 0, 4);
 		LCD.drawString(((MenuItem) (currentItem.getNext())).trickName, 0, 5);
 	}
 
@@ -103,37 +108,54 @@ public class TrickMenu {
 		LCD.drawString("Shutting down menu sequence", 0, 3);
 
 		Sound.beepSequence();
+		System.exit(1);
+
 	}
 
 	public void play(String value) {
 
 		LCD.clear();
 		Delay.msDelay(1000);
-		
+
 		switch (value) {
 		case valueFirstTrick:
-			runVolglijn();
+			robot.initAndRunFollowLine();
 			break;
 		case valueSecondTrick:
-			runMasterMind();
+			robot.runMasterMind();
 			break;
 		case valueThirdTrick:
-			runDraw();
+			robot.runDraw();
+			break;
+		case valueFourthTrick:
+			robot.runMusic();
 			break;
 		}
 	}
-
-	public void runVolglijn() {
-		System.out.printf("testing %s %s ", valueFirstTrick, nameFirstTrick);
-	}
-
-	public void runMasterMind() {
-		System.out.printf("testing %s %s ", valueSecondTrick, nameSecondTrick);
-	}
-
-	public void runDraw() {
-		System.out.printf("testing %s %s ", valueThirdTrick, nameThirdTrick);
-		// robot.getDraw().drawCircle();
-	}
-
 }
+
+// obsolete code
+//
+// public void runVolglijn() {
+// System.out.printf("testing %s %s ", valueFirstTrick, nameFirstTrick);
+//
+//
+// }
+//
+// public void runMasterMind() {
+// System.out.printf("testing %s %s ", valueSecondTrick, nameSecondTrick);
+// }
+//
+// public void runDraw() {
+// //System.out.printf("testing %s %s ", valueThirdTrick, nameThirdTrick);
+// // robot.getDraw().drawCircle();
+// LCD.clear();
+// LCD.drawString("Bye Felicia", 0, 0);
+// Delay.msDelay(5000);
+// }
+//
+// public void runMusic() {
+// // System.out.printf("testing %s %s ", valueSecondTrick, nameSecondTrick);
+// }
+//
+// }
