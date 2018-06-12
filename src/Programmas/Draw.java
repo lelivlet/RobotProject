@@ -6,11 +6,13 @@
 
 package Programmas;
 
+import lejos.hardware.lcd.LCD;
 import lejos.utility.Delay;
 import models.MotionController;
 
 public class Draw {
-
+	
+	// nieuwe MotionController aanmaken, noemen we pathFinder
 	MotionController pathFinder = new MotionController();
 
 	private final int SPEED = 200;
@@ -21,6 +23,36 @@ public class Draw {
 		this.pathFinder = BW;
 	}
 
+	// A method to draw a square
+	
+	public void drawSquare() {
+	
+		// draw a line 4 times
+		for (int i = 0; i < 4; i++) {
+
+			// set speed mA and mD (final attribute)
+//			pathFinder.setEngineSpeed(SPEED, SPEED);
+			pathFinder.vooruitOfAchteruit('V');
+			Delay.msDelay(2000);
+			pathFinder.volledigeStop();
+			pathFinder.rotateTo('R', 90);
+
+			// 
+//			pathFinder.setRotations(getRotationDegreesFromLength(length));
+
+//			LCD.clear();
+//			LCD.drawString("" + i, 3, 3);
+			
+			// stop mA and mB
+			pathFinder.waitComplete();
+
+			// turn 90 degrees to the right
+			
+		}
+		// close method
+		pathFinder.close();
+	}
+	
 	// A method to draw a circle
 	
 					// calibrate turnfactor etc
