@@ -11,6 +11,7 @@ import lejos.hardware.port.*;
 public class MotionController {
 	// Constanten
 	private float snelheid;
+	private final int rotationsToDegrees = 12;
 
 	// Motor initialization
 	private EV3LargeRegulatedMotor mA;
@@ -96,7 +97,8 @@ public class MotionController {
 	// A method to transform rotations to degrees and then rotate to
 	public void rotateTo(char direction, int degrees) {
 
-		int rotations = degrees * 12;
+		int rotations = degrees * rotationsToDegrees;
+;
 
 		if (direction == 'L') {
 
