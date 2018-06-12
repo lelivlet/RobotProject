@@ -81,15 +81,7 @@ public class Robot {
 			MusicPlayer musicPlayer = new MusicPlayer();
 			musicPlayer.run();
 		}
-	}
-	
-	// 
-
-	
-	public Draw getDraw() {
-		return draw;
-	}
-	
+	}	
 	
 	// TODO: MAke runners for MAstermind; after all runners made, and marvin is one, we can remove the getters above here for tricks. 
 	public void runMusic() {
