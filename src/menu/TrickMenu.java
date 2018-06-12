@@ -108,6 +108,8 @@ public class TrickMenu {
 		LCD.drawString("Shutting down menu sequence", 0, 3);
 
 		Sound.beepSequence();
+		System.exit(1);
+
 	}
 
 	public void play(String value) {
