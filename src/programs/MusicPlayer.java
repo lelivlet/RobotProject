@@ -3,47 +3,51 @@ package programs;
 import lejos.hardware.Button;
 import lejos.hardware.Sound;
 import lejos.hardware.lcd.LCD;
-import lejos.utility.Delay;
-import lejos.utility.TextMenu;
 
-public class MusicPlayer {
+
+/**
+ * @author Harmen
+ * Speelt music en gefet de titel op het display
+ *
+ */
+public class MusicPlayer implements PlayMusic {
 
 	private PlayList playlist;
+	private boolean play = true;
 
 	public MusicPlayer() {
 		super();
 		playlist = new PlayList();
 	}
-
+	
 	public void run() {
-		boolean play = true;
+		play();
+	}
+	
+	public void play() {
 		while (play) {
-			// LCD.clear();
-			// LCD.drawString("play = " + String.valueOf(play),3, 5);
-			// Delay.msDelay(1000);
 			for (int i = 0; i < playlist.getLenght(); i++) {
 				LCD.clear();
 				if (playlist.getSongFile(i).exists()) {
 					LCD.drawString(playlist.getTitle(i), 0, 3);
 					Sound.playSample(playlist.getSongFile(i), Sound.VOL_MAX);
 				}
-				LCD.clear();
-				LCD.drawString("Druk op ESCAPE", 3, 3);
-				Button.waitForAnyEvent(3000);
+				Button.waitForAnyPress(500);
 				if (Button.ESCAPE.isDown()) {
-					LCD.clear();
-					LCD.drawString("STOP", 3, 3);
 					play = false;
-					// LCD.drawString("play = " + String.valueOf(play),3, 5);
-					// Delay.msDelay(1000);
 				}
+
 			}
 		}
 
 	}
 
-	public PlayList getPlaylist() {
+	public PlayMusic getPlaylist() {
 		return playlist;
+	}
+	
+	public void stopPlay() {
+		play = false;
 	}
 
 }

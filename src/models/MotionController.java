@@ -36,6 +36,14 @@ public class MotionController {
 		this();
 		this.snelheid = snelheid;
 	}
+	
+	public EV3MediumRegulatedMotor getmB() {
+		return mB;
+	}
+
+	public void setmB(EV3MediumRegulatedMotor mB) {
+		this.mB = mB;
+	}
 
 	// Methodes:
 	/* Beweeg naar voren of naar achteren */
@@ -168,5 +176,9 @@ public class MotionController {
 		mA.close();
 		mD.close();
 		mB.close();
+	}
+
+	public EV3MediumRegulatedMotor getmC() {
+		return mC;
 	}
 }
