@@ -47,12 +47,18 @@ public class Robot {
 		TextMenu selectMenu = new TextMenu(items, 2, "Wat wil je doen?");
 		int selectedItem = selectMenu.select();
 		if (selectedItem == 0) {
-
+			
+			Song sample1 = dragon.sample_dragon;
+			Song sample2 = dragon.sample_dragons_daughter;
+			
+			PlayList playListIntro = new PlayList();
+			playListIntro.getSongs().add(sample1);
+			playListIntro.getSongs().add(sample2);
+			
 			FollowLine followline1 = new FollowLine(pidController, CS, motionController, dragon);
 			followline1.calibrate();
-
-			Sound.playSample((File) (dragon.sample_dragon_roar.getFile()), Sound.VOL_MAX);
-			Sound.playSample((File) (dragon.sample_dragons_daughter.getFile()), Sound.VOL_MAX);
+			
+			playListIntro.run();
 
 			Runnable playlistDragon = dragon.playlist;
 			Runnable followLine2 = new FollowLine(pidController, CS, motionController, dragon);
@@ -79,14 +85,22 @@ public class Robot {
 		} else if (selectedItem == 4) {
 			Runnable demoDragon = dragon;
 			Runnable playlistDragon = dragon.playlist;
-			
+
 			Thread thread1 = new Thread(playlistDragon);
-			Delay.msDelay(1000);
 			Thread thread2 = new Thread(demoDragon);
-			// Start threads
-			thread1.start();
-			thread2.start();
-			
+
+			LCD.clear();
+			LCD.drawString("Druk ENTER", 3, 3);
+			LCD.drawString("om te starten", 2, 4);
+			Delay.msDelay(500);
+			Button.ENTER.waitForPress();
+
+			while (Button.ENTER.isUp()) {
+				thread1.start();
+				Delay.msDelay(1000);
+				thread2.start();
+			}
+			motionController.close();
 		}
 
 	}
