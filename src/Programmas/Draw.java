@@ -19,14 +19,15 @@ public class Draw {
 	private final double TURN_FACTOR = 1.75;
 	private final int DELAY = 10000;
 
+	// constructor 
 	public Draw(MotionController BW) {
 		this.pathFinder = BW;
 	}
 
-	// A method to draw a square
+	// A method to draw a pentagon
 
 	// Draw Pentagon // maybe some minor adjusting in the array for degrees; notably the last one, also the length of the last line needs adjusting.
-	public void drawSquare(int length, char side) {
+	public void drawPentagon(int length, char side) {
 		
 		// hier moeten waardes aangepast worden om te compenseren voor het gebrek aan nauwkeurigheid vd motoren;
 		int[] correctionValues = {90, 90, 90, 95, 60};
@@ -75,27 +76,25 @@ public class Draw {
 	}
 
 	// A method to draw a triangle
-	public void drawTriangle(double length) {
-
+	public void drawTriangle(int length, char side) {
+		
+		// hier moeten waardes aangepast worden om te compenseren voor het gebrek aan nauwkeurigheid vd motoren;
+		int[] correctionValues = {90, 90, 90};
+		
+		// draw a line 4 times
 		for (int i = 0; i < 3; i++) {
 
-			// pathFinder.forward(SPEED);
-			pathFinder.setEngineSpeed(SPEED, SPEED);
-
 			pathFinder.setRotations(pathFinder.getRotationDegreesFromLength(length));
-
 			pathFinder.waitComplete();
 
-			// Delay.msDelay(length);
+			pathFinder.rotateTo(side, correctionValues[i]);
+			pathFinder.waitComplete();
 
-			pathFinder.rotateTo('R', 60);
 		}
+		// close method
 		pathFinder.close();
 	}
 
-	public void drawCrown(int length) {
-
-	}
 
 	// kan beter maar doet wat ie moet doen. 
 	public void drawConcentricSpiral() {
