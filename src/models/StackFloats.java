@@ -12,18 +12,44 @@ import java.util.Queue;
 public class StackFloats {
 	
 	private Queue<Float> queue = new ArrayDeque<>();
-	int size;
-	
-	public StackFloats() {
-		super();
-	}
+	private int size;
+		
 	
 	public StackFloats(int size) {
 		this();
 		this.size = size;
 	}
-	
-	
+
+
+
+	public StackFloats() {
+		super();
+	}
+
+
+
+	public Queue<Float> getQueue() {
+		return queue;
+	}
+
+
+
+	public void setQueue(Queue<Float> queue) {
+		this.queue = queue;
+	}
+
+
+
+	public int getSize() {
+		return size;
+	}
+
+
+
+	public void setSize(int size) {
+		this.size = size;
+	}
+
 	
 	public void addValue(float value) {
 		if (queue.size() >= size) {
@@ -36,7 +62,7 @@ public class StackFloats {
 	public String toString() {
 		String waardes = "";
 		for (Float value: queue) {
-			waardes += value.toString() + ", ";
+			waardes += String.format("%.2f ", value);
 		}
 		return "[" + waardes + "]";
 	}

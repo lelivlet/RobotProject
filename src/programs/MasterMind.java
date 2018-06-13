@@ -24,7 +24,7 @@ public class MasterMind {
 		this.BW = BW;
 	}
 
-	// Creëer een random raadsel
+	// Creï¿½er een random raadsel
 	public int[] createRiddle() {
 		int[] riddle = new int[4];
 		for (int i = 0; i < riddle.length; i++) {
@@ -140,7 +140,7 @@ public class MasterMind {
 		CS.setFloodLight(6);
 		CS.setColorIdMode();
 
-		// creëert een raadsel
+		// creï¿½ert een raadsel
 		int[] riddle = createRiddle();
 
 		// Men kan 12 keer raden

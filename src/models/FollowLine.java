@@ -1,9 +1,6 @@
 package models;
 
-import java.io.File;
-
 import lejos.hardware.Button;
-import lejos.hardware.Sound;
 import lejos.hardware.lcd.LCD;
 import lejos.utility.Delay;
 import lejos.utility.TextMenu;
@@ -11,51 +8,47 @@ import programs.*;
 
 public class FollowLine implements Runnable {
 
-	private PID_Controller pidController;
+	private AdvPID_Controller pidController;
 	private ColorSensor CS;
 	private MotionController motionController;
-	
-	// variabele om te kijken welke kant de robot oprijdt
-	boolean rightSide;
-	
-	// default istellingen
+	private Dragon dragon;
+	private boolean rightSide;
+	private final static int STACK_SIZE = 10; // grootte van de stack voor de moving average wordt gebruikt om de bewegingen van de dragon vloeiend te maken
+	private final static float CORRECTION_FACTOR = 2; // corrigeerd de waarde voor de dragon bewegingen
+
+	// default
 	private static final float SPEED_DEFAULT = (float) 100;
 	private static final float KP_VALUE_DEFAULT = (float) 1.0;
 	private static final float KI_VALUE_DEFAULT = (float) 0.0;
 	private static final float KD_VALUE_DEFAULT = (float) 0.0;
-	File tune_default;
-	// instellingen normale track
+
+	// normale track zonder onderbrekingen
 	private static final float SPEED_NORMAL = (float) 375;
 	private static final float KP_VALUE_NORMAL = (float) 1.5;
 	private static final float KI_VALUE_NORMAL = (float) 0.0;
 	private static final float KD_VALUE_NORMAL = (float) 2.3;
-	File tune_normal;
-	// instellingen moeilijk track
+
+	// moeilijk track met onderbrekingen
 	private static final float SPEED_DIFFICULT = (float) 200;
 	private static final float KP_VALUE_DIFFICULT = (float) 0.5;
 	private static final float KI_VALUE_DIFFICULT = (float) 0.0;
 	private static final float KD_VALUE_DIFFICULT = (float) 1.0;
-	File tune_difficult;
+
 	// test instellingen
 	private float speedTest = (float) 375;
-	private float kpTest = (float) 1.0;
+	private float kpTest = (float) 1.5;
 	private float kiTest = (float) 0.0;
 	private float kdTest = (float) 2.3;
 
-	
-
-	public FollowLine(PID_Controller pidController, ColorSensor CS, MotionController motionController) {
+	public FollowLine(PID_Controller pidController, ColorSensor CS, MotionController motionController, Dragon dragon) {
 		super();
-		this.pidController = pidController;
+		this.pidController = (AdvPID_Controller) pidController;
 		this.CS = CS;
 		this.motionController = motionController;
-		this.tune_default = new File("carnaval_festival.wav");
-		this.tune_normal = new File("star_wars.wav");
-		this.tune_difficult = new File("mission_impossible.wav");
+		this.dragon = dragon;
 		this.rightSide = true;
+		this.pidController.setStackSize(STACK_SIZE);
 	}
-
-	
 
 	// hiermee kan de robot gecalibreerd worden
 	public void calibrate() {
@@ -78,58 +71,66 @@ public class FollowLine implements Runnable {
 		String[] items1 = { "Normale Track", "Moeilijke Track", "Test", "Default" };
 		TextMenu selectMenu1 = new TextMenu(items1, 2, "Racemodus");
 		int selectedItem1 = selectMenu1.select();
+
 		if (selectedItem1 == 0) {
 			pidController.setKp(KP_VALUE_NORMAL);
 			pidController.setKi(KI_VALUE_NORMAL);
 			pidController.setKd(KD_VALUE_NORMAL);
 			motionController.setSnelheid(SPEED_NORMAL);
-			if (tune_normal.exists()) {
-				Sound.playSample(tune_normal);
-			}
+
 		} else if (selectedItem1 == 1) {
 			pidController.setKp(KP_VALUE_DIFFICULT);
 			pidController.setKi(KI_VALUE_DIFFICULT);
 			pidController.setKd(KD_VALUE_DIFFICULT);
 			motionController.setSnelheid(SPEED_DIFFICULT);
-			if (tune_difficult.exists()) {
-				Sound.playSample(tune_difficult);
-			}
+
 		} else if (selectedItem1 == 2) {
 			pidController.setKp(kpTest);
 			pidController.setKi(kiTest);
 			pidController.setKd(kdTest);
 			motionController.setSnelheid(speedTest);
+
 		} else if (selectedItem1 == 3) {
 			pidController.setKp(KP_VALUE_DEFAULT);
 			pidController.setKi(KI_VALUE_DEFAULT);
 			pidController.setKd(KD_VALUE_DEFAULT);
 			motionController.setSnelheid(SPEED_DEFAULT);
-			if (tune_default.exists()) {
-				Sound.playSample(tune_default);
-			}
+
 		}
-		LCD.clear();
-		LCD.drawString("Druk ENTER", 3, 3);
-		LCD.drawString("om te starten", 2, 4);
-		Delay.msDelay(500);
-		Button.ENTER.waitForPress();
+	
 
 	}
 
 	public void run() {
+//		LCD.clear();
+//		LCD.drawString("Druk ENTER", 3, 3);
+//		LCD.drawString("om te starten", 2, 4);
+//		Delay.msDelay(500);
+//		Button.ENTER.waitForPress();
+
 		LCD.clear();
-		LCD.drawString("Volg de lijn!", 3, 3);
+		LCD.drawString("Go Dragon!!!", 3, 3);
+
 		float speed = motionController.getSnelheid();
 		float midpoint = PID_Controller.getMidpoint();
+
 		// Zet motoren aan
 		motionController.vooruitOfAchteruit('V');
+		motionController.getmB().forward();
+
 		// Zo lang de knop niet ingedrukt wordt, volgt de robot een lijn
 		while (Button.ENTER.isUp()) {
 			// variable om het resultaat van de sensor op te slaan
 			float currentBrightness = CS.getCurrentNormalisedBrightness();
 			float correction = pidController.getCorrection(currentBrightness);
+			float movingAverage = pidController.getMovingAverage();
+			
+			// dragon bewegingen
+			dragon.headRotateTo((int) (90 * movingAverage * CORRECTION_FACTOR));
+			dragon.tailRotateTo((int) (90 * movingAverage));
+			
 			// rightSide = true, dan rijdt de robot rechtsom, ander linksom
-			// beide motoren worden bijgestuurd met de cirrectiefactor
+			// beide motoren worden bijgestuurd met de correctiefactor
 			if (rightSide) {
 				motionController.setEngineSpeed(speed * (midpoint - correction), speed * (midpoint + correction));
 			} else {

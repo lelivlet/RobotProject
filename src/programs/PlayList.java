@@ -8,11 +8,11 @@ import lejos.hardware.Sound;
 import lejos.hardware.lcd.LCD;
 
 /**
- * @author Harmen In deze class worden de liedjes opgeslagen en het keuzemenu
- *         aangemaakt
+ * @author Harmen 
+ * hier in kan een playlist worden samengesteld en afgespeeld
  *
  */
-public class PlayList implements Runnable {
+public class PlayList implements Runnable, PlayMusic {
 
 	private ArrayList<Song> songs;
 	private boolean play = true;
@@ -22,29 +22,35 @@ public class PlayList implements Runnable {
 		super();
 		// voeg liedjes toe aan de playlist
 		this.songs = new ArrayList<Song>();
-		
-		
+
 	}
 
-	@Override
 	public void run() {
-
-		while (play) {
-			for (int i = 0; i < songs.size() && play; i++) {
+		play();
+	}
+	
+	
+	@Override
+	public void play() {
+		while (play && Button.ENTER.isUp()) {
+			for (int i = 0; i < songs.size(); i++) {
 				if (getSongFile(i).exists()) {
 					Sound.playSample(getSongFile(i), Sound.VOL_MAX);
 				}
-				Button.waitForAnyEvent(3000);
-				if (Button.ESCAPE.isDown()) {
-					LCD.clear();
-					LCD.drawString("STOP", 3, 3);
-					play = false;
-				}
+				Button.waitForAnyPress(500);
+//				if (Button.ESCAPE.isDown()) {
+//					play = false;
+//				}
 			}
+			
 		}
 
 	}
 
+	/* (non-Javadoc)
+	 * @see Programmas.PlayMusic#stopPlay()
+	 */
+	@Override
 	public void stopPlay() {
 		play = false;
 	}
@@ -61,16 +67,17 @@ public class PlayList implements Runnable {
 		File songFile = songs.get(index).getFile();
 		return songFile;
 	}
-	
+
 	public int getLenght() {
 		int lenght = songs.size();
 		return lenght;
 	}
-	
+
 	public String getTitle(int index) {
 		String title = songs.get(index).getTitle();
 		return title;
 	}
+	
 	
 
 }

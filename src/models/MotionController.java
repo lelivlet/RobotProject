@@ -16,6 +16,7 @@ public class MotionController {
 	// Motor initialization
 	public EV3LargeRegulatedMotor mA;
 	private EV3LargeRegulatedMotor mD;
+	private EV3MediumRegulatedMotor mB;
 
 	// Wiel-eigenschappen
 	private final double DIAMETER = 4.2;
@@ -26,12 +27,22 @@ public class MotionController {
 		super();
 		this.mA = new EV3LargeRegulatedMotor(MotorPort.A);
 		this.mD = new EV3LargeRegulatedMotor(MotorPort.D);
+		this.mB = new EV3MediumRegulatedMotor(MotorPort.B);
+
 	}
 
 	// Constructor met snelheid
 	public MotionController(float snelheid) {
 		this();
 		this.snelheid = snelheid;
+	}
+	
+	public EV3MediumRegulatedMotor getmB() {
+		return mB;
+	}
+
+	public void setmB(EV3MediumRegulatedMotor mB) {
+		this.mB = mB;
 	}
 
 	// Methodes:
@@ -58,6 +69,15 @@ public class MotionController {
 		mD.forward();
 	}
 
+	public void backward(int speed) {
+
+		mA.setSpeed(speed);
+		mD.setSpeed(speed);
+
+		mA.backward();
+		mD.backward();
+	}
+	
 	// A method to make a circle.
 	public void turnCircularRight(int speed, double turnFactor) {
 
@@ -144,9 +164,21 @@ public class MotionController {
 		this.snelheid = snelheid;
 	}
 
+	// Reinitialise your engines 
+	  public void reinitialiseEngines() { 
+	     
+	    volledigeStop(); 
+	    close(); 
+	  } 
+	  
 	public void close() {
 		// Geef de motoren vrij
 		mA.close();
 		mD.close();
+		mB.close();
+	}
+
+	public EV3MediumRegulatedMotor getmC() {
+		return mC;
 	}
 }
