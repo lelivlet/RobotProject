@@ -25,28 +25,18 @@ public class Draw {
 
 	// A method to draw a square
 	
-	public void drawSquare() {
+	public void drawSquare(int length, char side) {
 	
 		// draw a line 4 times
 		for (int i = 0; i < 4; i++) {
 
-			// set speed mA and mD (final attribute)
-//			pathFinder.setEngineSpeed(SPEED, SPEED);
-			pathFinder.vooruitOfAchteruit('V');
-			Delay.msDelay(2000);
-			pathFinder.volledigeStop();
-			pathFinder.rotateTo('R', 90);
-
-			// 
-//			pathFinder.setRotations(getRotationDegreesFromLength(length));
-
-//			LCD.clear();
-//			LCD.drawString("" + i, 3, 3);
-			
-			// stop mA and mB
+			pathFinder.setRotations(pathFinder.getRotationDegreesFromLength(length));
 			pathFinder.waitComplete();
-
-			// turn 90 degrees to the right
+			
+			if(i < 3) {
+				pathFinder.rotateTo(side, 90);
+				pathFinder.waitComplete();
+			}
 			
 		}
 		// close method
@@ -66,7 +56,7 @@ public class Draw {
 	}
 
 	// A method to draw a pentagram
-	public void drawPentagram(int length) {
+	public void drawPentagram(double length) {
 
 		for (int i = 0; i < 5; i++) {
 

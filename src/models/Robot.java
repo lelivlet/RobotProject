@@ -102,5 +102,16 @@ public class Robot {
 		LCD.drawString("Bye Felicia", 0, 0);
 		Delay.msDelay(3000);
 	}
+
+	// Getters
+	public MotionController getMotionController() {
+		return motionController;
+	}
+
+	public Draw getDraw() {
+		return draw;
+	}
+	
+	
 	
 }

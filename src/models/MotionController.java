@@ -11,10 +11,10 @@ import lejos.hardware.port.*;
 public class MotionController {
 	// Constanten
 	private float snelheid;
-	private final int rotationsToDegrees = 12;
+	private final int rotationsToDegrees = ((360/61)/2); // 1 rotatie van het wiel --> maakt een hoek van 85 graden??
 
 	// Motor initialization
-	private EV3LargeRegulatedMotor mA;
+	public EV3LargeRegulatedMotor mA;
 	private EV3LargeRegulatedMotor mD;
 
 	// Wiel-eigenschappen
@@ -103,17 +103,19 @@ public class MotionController {
 		if (direction == 'L') {
 
 			// forward positive numbers
-			mA.rotate(rotations);
+			mA.rotate(rotations, true);
 			// backward negative numbers
-			mD.rotate(rotations * -1);
+			mD.rotate(rotations * -1, true);
+			waitComplete();
 		}
 
 		else if (direction == 'R') {
 
 			// forward positive numbers
-			mA.rotate(rotations * -1);
+			mA.rotate(rotations * -1, true);
 			// backward negative numbers
-			mD.rotate(rotations);
+			mD.rotate(rotations, true);
+			waitComplete();
 		}
 	}
 
