@@ -15,7 +15,7 @@ import lejos.utility.Delay;
 public class Dragon implements Runnable {
 
 	private MotionController motionController;
-	private static final int CORRECTION_FACTOR = 5; // correctie factor ivm de tandwielen
+	private static final int CORRECTION_FACTOR = 4; // correctie factor ivm de tandwielen
 	private int speedTail = 200;
 	private int speedHead = speedTail * CORRECTION_FACTOR;
 	
@@ -45,18 +45,19 @@ public class Dragon implements Runnable {
 
 	public void run() {
 		Button.DOWN.waitForPress();
-		RegulatedMotor[] syncList = {motionController.getmB()};
-		motionController.getmC().synchronizeWith(syncList );
-		motionController.getmC().startSynchronization();
+//		er is geen extra motortje voor de staart
+//		RegulatedMotor[] syncList = {motionController.getmB()};
+//		motionController.getmC().synchronizeWith(syncList );
+//		motionController.getmC().startSynchronization();
 		while (Button.DOWN.isUp()) {
 			headRotateTo(0);
-			tailRotateTo(0);
+//			tailRotateTo(0);
 			Delay.msDelay(500);	
 			headRotateTo(90);
-			tailRotateTo(-90);
+//			tailRotateTo(-90);
 			Delay.msDelay(500);	
 			headRotateTo(-90);
-			tailRotateTo(90);
+//			tailRotateTo(90);
 		}
 	}
 
@@ -66,7 +67,7 @@ public class Dragon implements Runnable {
 	}
 
 	public void tailRotateTo(int angle) {
-		motionController.getmB().setSpeed(speedTail);
+		motionController.getmC().setSpeed(speedTail);
 		motionController.getmC().rotate(angle);
 	}
 }
