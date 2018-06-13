@@ -144,6 +144,13 @@ public class MotionController {
 		this.snelheid = snelheid;
 	}
 
+	// Reinitialise your engines 
+	  public void reinitialiseEngines() { 
+	     
+	    volledigeStop(); 
+	    close(); 
+	  } 
+	  
 	public void close() {
 		// Geef de motoren vrij
 		mA.close();

@@ -34,8 +34,10 @@ public class Draw {
 			pathFinder.waitComplete();
 			
 			if(i < 3) {
+				
 				pathFinder.rotateTo(side, 90);
 				pathFinder.waitComplete();
+				pathFinder.reinitialiseEngines();
 			}
 			
 		}
