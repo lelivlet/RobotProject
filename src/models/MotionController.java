@@ -16,6 +16,7 @@ public class MotionController {
 	// Motor initialization
 	public EV3LargeRegulatedMotor mA;
 	private EV3LargeRegulatedMotor mD;
+	private EV3MediumRegulatedMotor mB;
 
 	// Wiel-eigenschappen
 	private final double DIAMETER = 4.2;
@@ -26,6 +27,8 @@ public class MotionController {
 		super();
 		this.mA = new EV3LargeRegulatedMotor(MotorPort.A);
 		this.mD = new EV3LargeRegulatedMotor(MotorPort.D);
+		this.mB = new EV3MediumRegulatedMotor(MotorPort.B);
+
 	}
 
 	// Constructor met snelheid
@@ -155,5 +158,6 @@ public class MotionController {
 		// Geef de motoren vrij
 		mA.close();
 		mD.close();
+		mB.close();
 	}
 }

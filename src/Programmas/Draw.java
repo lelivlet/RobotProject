@@ -11,43 +11,42 @@ import lejos.utility.Delay;
 import models.MotionController;
 
 public class Draw {
-	
+
 	// nieuwe MotionController aanmaken, noemen we pathFinder
 	MotionController pathFinder;
 
 	private final int SPEED = 200;
 	private final double TURN_FACTOR = 1.75;
-	private final int DELAY = 5000;
+	private final int DELAY = 10000;
 
 	public Draw(MotionController BW) {
 		this.pathFinder = BW;
 	}
 
 	// A method to draw a square
-	
+
+	// Draw Pentagon // maybe some minor adjusting in the array for degrees; notably the last one, also the length of the last line needs adjusting.
 	public void drawSquare(int length, char side) {
-	
+		
+		// hier moeten waardes aangepast worden om te compenseren voor het gebrek aan nauwkeurigheid vd motoren;
+		int[] correctionValues = {90, 90, 90, 95, 60};
+		
 		// draw a line 4 times
-		for (int i = 0; i < 4; i++) {
+		for (int i = 0; i < 5; i++) {
 
 			pathFinder.setRotations(pathFinder.getRotationDegreesFromLength(length));
 			pathFinder.waitComplete();
-			
-			if(i < 3) {
-				
-				pathFinder.rotateTo(side, 90);
-				pathFinder.waitComplete();
-				pathFinder.reinitialiseEngines();
-			}
-			
+
+			pathFinder.rotateTo(side, correctionValues[i]);
+			pathFinder.waitComplete();
+
 		}
 		// close method
 		pathFinder.close();
 	}
-	
+
 	// A method to draw a circle
-	
-					// calibrate turnfactor etc
+	// deze methode is perfect zoals ie is. 
 	public void drawCircle() {
 
 		pathFinder.turnCircularRight(SPEED, TURN_FACTOR);
@@ -64,7 +63,7 @@ public class Draw {
 
 			// pathFinder.forward(SPEED);
 			pathFinder.setEngineSpeed(SPEED, SPEED);
-	
+
 			pathFinder.setRotations(pathFinder.getRotationDegreesFromLength(length));
 			// Delay.msDelay(length);
 
@@ -98,28 +97,17 @@ public class Draw {
 
 	}
 
-	public void drawTest(int length) {
-
-		// pathFinder.setEngineSpeed(SPEED, SPEED);
-
-		pathFinder.forward(SPEED);
-		
-		Delay.msDelay(length);
-
-
-		//pathFinder.setRotations(getRotationDegreesFromLength(length));
-
-	// 	pathFinder.waitComplete();
-
-		// Delay.msDelay(length);
-
-	//	pathFinder.rotateTo('R', 60);
-		
-		//pathFinder.close();
-
-	}
-
+	// kan beter maar doet wat ie moet doen. 
 	public void drawConcentricSpiral() {
+		
+		double SPIRAL_TURN_FACTOR = 1.75;
 
+		for (int i = 0; i < 4; i++) {
+
+		pathFinder.turnCircularRight(SPEED, SPIRAL_TURN_FACTOR);
+
+		Delay.msDelay(DELAY);
+		SPIRAL_TURN_FACTOR -= -.25; 
+		}
 	}
 }
