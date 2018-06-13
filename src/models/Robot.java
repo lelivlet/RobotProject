@@ -1,17 +1,17 @@
 package models;
 
-import Programmas.Draw;
-import Programmas.MasterMind;
 import lejos.hardware.Button;
 import java.io.File;
 
-import Programmas.MusicPlayer;
-import Programmas.PlayList;
-import Programmas.Song;
 import lejos.hardware.Sound;
 import lejos.hardware.lcd.LCD;
 import lejos.utility.Delay;
 import menu.TrickMenu;
+import programs.Draw;
+import programs.MasterMind;
+import programs.MusicPlayer;
+import programs.PlayList;
+import programs.Song;
 import lejos.utility.TextMenu;
 
  
