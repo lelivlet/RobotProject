@@ -3,6 +3,7 @@ package Programmas;
 import lejos.hardware.Button;
 import lejos.hardware.Key;
 import lejos.hardware.Sound;
+import lejos.hardware.lcd.LCD;
 import lejos.robotics.Color;
 import lejos.utility.Delay;
 import models.ColorSensor;
@@ -32,7 +33,7 @@ public class MasterMind {
 		for (int i = 0; i < riddle.length; i++) {
 			int randomNumber = ((int) (Math.random() * 6));
 			riddle[i] = randomToNumber[randomNumber];
-			System.out.println(numberToColor[riddle[i]]);// TEST***
+			LCD.drawString(String.format("%s", numberToColor[riddle[i]]), 0, i); // TODO VERWIJDEREN WANT TEST***
 		}
 		return riddle;
 	}
@@ -40,9 +41,13 @@ public class MasterMind {
 	// doe 1 keer 4 enkele gokjes (dus 1 beurt als het ware)
 	public int[] takeAGuess() {
 		// Plaats op de stip
-		System.out.println("Positioneer de Robot op de zwarte stip en druk op ENTER");
+		LCD.clear();
+		LCD.drawString("Positioneer de", 0, 0);
+		LCD.drawString("Robot op de zwarte", 0, 1);
+		LCD.drawString("stip en druk op", 0, 2);
+		LCD.drawString("ENTER", 0, 3);
 		waitForKey(Button.ENTER);
-		
+		LCD.clear();
 		/* Lees kleuren in en rij verder */
 		for (int i = 0; i < guess.length; i++) {
 			if(i == 0) {
@@ -60,7 +65,7 @@ public class MasterMind {
 				
 				int test = guess[i];
 				// Schrijf op display wat er gemeten is
-				System.out.println(numberToColor[test]);
+				LCD.drawString(String.format("%s", numberToColor[test]), 0, i);
 			} else if(i > 0 && i < guess.length) {
 				BW.setRotations(BW.getRotationDegreesFromLength(6.5));
 				BW.waitComplete();
@@ -75,10 +80,11 @@ public class MasterMind {
 				
 				int test = guess[i];
 				// Schrijf op display wat er gemeten is
-				System.out.println(numberToColor[test]);
+				LCD.drawString(String.format("%s", numberToColor[test]), 0, i);
 			}
 		}
 		// Rij terug en geef de guess terug
+		//TODO moet er misschien uit aangezien hij niet precies op dezelfde plek eindigt als dat hij start
 		BW.setRotations(BW.getRotationDegreesFromLength(-(4.5+(3*6.5))));
 		BW.waitComplete();
 		return guess;
@@ -99,15 +105,6 @@ public class MasterMind {
 		int numberColorCorrect = numberColorsGuessed(riddle, guess);
 		int[] correctGuesses = { numberFullyCorrect, numberColorCorrect };
 
-		// // TEST***
-		// System.out.println("Riddle: ");
-		// for (int i = 0; i < riddle.length; i++) {
-		// System.out.printf("%d ", riddle[i]);
-		// }
-		// System.out.println("\nGuess: ");
-		// for (int i = 0; i < riddle.length; i++) {
-		// System.out.printf("%d ", guess[i]);
-		// }
 		return correctGuesses;
 	}
 
@@ -132,11 +129,15 @@ public class MasterMind {
 	}	
 
 	public void playMasterMind() {
-		System.out.println("Wil je mastermind spelen? Druk ENTER voor JA en ESCAPE voor NEE");
+		LCD.clear();
+		LCD.drawString("Mastermind spelen?", 0, 0);
+		LCD.drawString("Druk ENTER voor JA", 0, 2);
+		LCD.drawString("ESCAPE voor NEE", 0, 3);
 		waitForKey(Button.ENTER);
+		LCD.clear();
 
 		CS.setFloodLight(true);
-		CS.setFloodLight(6); // TODO NOG FF AAN SLEUTELEN
+		CS.setFloodLight(6);
 		CS.setColorIdMode();
 
 		// creëert een raadsel
@@ -149,35 +150,59 @@ public class MasterMind {
 			for (int j = 0; j < riddle.length; j++) {
 				tempRiddle[j] = riddle[j];
 			}
-			System.out.printf("Ronde #%d\n", i); // TODO kan ook van 12 naar 1
+			LCD.clear();
+			LCD.drawString(String.format("Ronde #%d", i+1), 0, 0);
+			LCD.drawString(String.format("Nog %d rondes.", 12-i), 0, 1);
+			
+			LCD.drawString("Druk op ENTER", 0, 4);
+			waitForKey(Button.ENTER);
+			LCD.clear();
+			
 			int[] guess = takeAGuess();
 			int[] numberGuessedCorrectly = numbersGuessed(tempRiddle, guess);
+			waitForKey(Button.ENTER);
+			LCD.clear();
+			
 			if (numberGuessedCorrectly[0] == 4) {
-				System.out.println("Gefeliciteerd, je hebt gewonnen!!");
+				LCD.drawString("Gefeliciteerd, je hebt gewonnen!!", 0, 3);
+				LCD.drawString("*********************************", 0, 4);
 				Sound.systemSound(true, 2); // Geeft een descending arpeggio
 				Sound.systemSound(true, 2); // Geeft een descending arpeggio
 				Delay.msDelay(5000); // Laat eerst 5 sec zien dat je gewonnen hebt
+				LCD.clear();
 				break;
 			} else if (i == 11 && numberGuessedCorrectly[0] != 4) {
-				System.out.println("Helaas, je hebt de kleurencode niet kunnen raden. \nDe kleurencode was: \n");
-				for (int j = 0; j < riddle.length; j++) {
-					System.out.printf("%s ", numberToColor[riddle[j]]);
-					
-				}
+				LCD.clear();
+				LCD.drawString("Helaas, je hebt de kleurencode niet kunnen raden.", 0, 3);
 				Sound.systemSound(true, 3); // Geeft een ascending arpeggio
+				Delay.msDelay(3000); // Laat 3 sec bovenstaand bericht zien
+				LCD.clear();
+				LCD.drawString("De kleurencode was: ", 0, 0);
+				for (int j = 0; j < riddle.length; j++) {
+					LCD.drawString(String.format("%s", numberToColor[riddle[j]]), 0, j+1);
+				}
 				Delay.msDelay(5000); // Laat eerst 5 sec zien dat je gewonnen hebt
+				LCD.clear();
 				break;
 			} else {
-				System.out.printf(
-						"\nJe hebt %d kleuren goed op je juiste plaats \npJe hebt %d kleuren goed, maar niet op de juiste plaats",
-						numberGuessedCorrectly[0], numberGuessedCorrectly[1]);
+				LCD.clear();
+				LCD.drawString(String.format("%d helemaal goed", numberGuessedCorrectly[0]), 0, 0);
+				LCD.drawString(String.format("%d kleur(en) goed", numberGuessedCorrectly[1]), 0, 1);
+
+				LCD.drawString("Druk op ENTER", 0, 3);
+				waitForKey(Button.ENTER);
+				LCD.clear();
 			}
 		}
-		System.out.println("Wil je nog een keer spelen? \nENTER = JA, een andere knop = NEE");
+		LCD.drawString("Wil je nog een keer spelen?", 0, 1);
+		LCD.drawString("ENTER = JA", 0, 3);
+		LCD.drawString("Andere knop = NEE", 0, 4);
 		Button.waitForAnyPress();
 		if (Button.ENTER.isDown()) {
+			LCD.clear();
 			playMasterMind();
 		}
+		LCD.clear();
 	}
 	
 	
