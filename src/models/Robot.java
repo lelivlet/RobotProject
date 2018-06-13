@@ -106,7 +106,7 @@ public class Robot {
 		}
 	}	
 	
-	// TODO: MAke runners for MAstermind; after all runners made, and marvin is one, we can remove the getters above here for tricks. 
+	// runners for TrickMenu
 	public void runMusic() {
 		MusicPlayer musicPlayer = new MusicPlayer();
 		musicPlayer.run();
@@ -122,8 +122,7 @@ public class Robot {
 	}
 	
 	public void runDraw() {
-		LCD.drawString("Bye Felicia", 0, 0);
-		Delay.msDelay(3000);
+		draw.runDrawSequence();
 	}
 
 	// Getters

@@ -22,7 +22,7 @@ public class ColorSensor implements ColorDetector, ColorIdentifier {
 	float white;
 	float[] sample; // Hier komt rood, groen en blauw in
 	float gray;
-	
+
 	/**
 	 * Creëert ColorSensor object. Dit is een wrapper class (vertaalslag) voor
 	 * EV3ColorSensor.
@@ -35,10 +35,9 @@ public class ColorSensor implements ColorDetector, ColorIdentifier {
 		super();
 		setRGBMode();
 	}
-	
+
 	@Override
-	public int getColorID()
-	{
+	public int getColorID() {
 		sensor.fetchSample(sample, 0);
 		return (int) sample[0];
 	}
@@ -63,40 +62,35 @@ public class ColorSensor implements ColorDetector, ColorIdentifier {
 		sensor.setCurrentMode("RGB");
 		this.sample = new float[sensor.sampleSize()];
 	}
-	
+
 	public void setColorIdMode() {
 		sensor.setCurrentMode("ColorID");
 		this.sample = new float[sensor.sampleSize()];
 	}
+
 	public void setFloodLight(boolean on) {
 		sensor.setFloodlight(on);
 	}
+
 	public void setFloodLight(int color) {
 		sensor.setFloodlight(color);
 	}
-	
 
-	/**
-	 * Return Red light level. Use with Red mode. Sensor led should be red.
-	 * 
-	 * @return Light level as range 0 to 1.
-	 */
 	public float getRed() {
 		sensor.fetchSample(sample, 0);
 		return sample[0];
 	}
-	
+
 	public float getGreen() {
 		sensor.fetchSample(sample, 0);
 		return sample[1];
 	}
-	
+
 	public float getBlue() {
 		sensor.fetchSample(sample, 0);
 		return sample[2];
 	}
 
-	// een functie die een array teruggeeft van rood, groen en blauw
 	public float[] getColorRGB() {
 		sensor.fetchSample(sample, 0);
 		return sample;
@@ -108,12 +102,13 @@ public class ColorSensor implements ColorDetector, ColorIdentifier {
 		float grijsWaarde = (RGBColor[0] + RGBColor[1] + RGBColor[2]) / 3;
 		return grijsWaarde;
 	}
-	
+
 	// Calibreer wit en zwart
 	public void setBlackWhiteFromCalibration() {
 		this.black = getBrightness(calibrateColor("black"));
 		this.white = getBrightness(calibrateColor("white"));
 	}
+
 	// grey = 0.5
 	public float getCurrentNormalisedBrightness() {
 		float[] currentSample = getColorRGB();
@@ -121,7 +116,7 @@ public class ColorSensor implements ColorDetector, ColorIdentifier {
 		float normalisedBrightness = (currentBrightness - black) / white;
 		return normalisedBrightness;
 	}
-	
+
 	// kleurcalibratie
 	public float[] calibrateColor(String colorName) {
 		final EV3 ev3 = (EV3) BrickFinder.getLocal();
@@ -161,7 +156,6 @@ public class ColorSensor implements ColorDetector, ColorIdentifier {
 		return getColorRGB();
 	}
 
-	
 	public void close() {
 		sensor.close();
 	}
