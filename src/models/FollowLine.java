@@ -127,7 +127,6 @@ public class FollowLine implements Runnable {
 			
 			// dragon bewegingen
 			dragon.headRotateTo((int) (90 * movingAverage * CORRECTION_FACTOR));
-			dragon.tailRotateTo((int) (90 * movingAverage));
 			
 			// rightSide = true, dan rijdt de robot rechtsom, ander linksom
 			// beide motoren worden bijgestuurd met de correctiefactor

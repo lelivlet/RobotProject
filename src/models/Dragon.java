@@ -2,8 +2,8 @@ package models;
 
 import java.io.File;
 
-import Programmas.PlayList;
-import Programmas.Song;
+import programs.PlayList;
+import programs.Song;
 import lejos.hardware.Button;
 import lejos.robotics.RegulatedMotor;
 import lejos.utility.Delay;
@@ -66,8 +66,4 @@ public class Dragon implements Runnable {
 		motionController.getmB().rotate(angle * CORRECTION_FACTOR);
 	}
 
-	public void tailRotateTo(int angle) {
-		motionController.getmC().setSpeed(speedTail);
-		motionController.getmC().rotate(angle);
-	}
 }

@@ -113,7 +113,7 @@ public class Robot {
 	}
 	
 	public void initAndRunFollowLine() {
-		FollowLine newFollowline = new FollowLine(pidController, CS, motionController);
+		FollowLine newFollowline = new FollowLine(pidController, CS, motionController, dragon);
 		newFollowline.run();
 	}
 	

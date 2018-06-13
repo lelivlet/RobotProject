@@ -1,4 +1,4 @@
-package Programmas;
+package programs;
 
 /**
  * @author Harmen

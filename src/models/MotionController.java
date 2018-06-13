@@ -178,7 +178,4 @@ public class MotionController {
 		mB.close();
 	}
 
-	public EV3MediumRegulatedMotor getmC() {
-		return mC;
-	}
 }
