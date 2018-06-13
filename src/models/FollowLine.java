@@ -35,7 +35,7 @@ public class FollowLine implements Runnable {
 
 	// test instellingen
 	private float speedTest = (float) 375;
-	private float kpTest = (float) 1.0;
+	private float kpTest = (float) 1.5;
 	private float kiTest = (float) 0.0;
 	private float kdTest = (float) 2.3;
 
@@ -101,11 +101,11 @@ public class FollowLine implements Runnable {
 	}
 
 	public void run() {
-		LCD.clear();
-		LCD.drawString("Druk ENTER", 3, 3);
-		LCD.drawString("om te starten", 2, 4);
-		Delay.msDelay(500);
-		Button.ENTER.waitForPress();
+//		LCD.clear();
+//		LCD.drawString("Druk ENTER", 3, 3);
+//		LCD.drawString("om te starten", 2, 4);
+//		Delay.msDelay(500);
+//		Button.ENTER.waitForPress();
 
 		LCD.clear();
 		LCD.drawString("Go Dragon!!!", 3, 3);

@@ -47,24 +47,24 @@ public class Robot {
 		TextMenu selectMenu = new TextMenu(items, 2, "Wat wil je doen?");
 		int selectedItem = selectMenu.select();
 		if (selectedItem == 0) {
-			
-			Song sample1 = dragon.sample_dragon;
-			Song sample2 = dragon.sample_dragons_daughter;
-			
-			PlayList playListIntro = new PlayList();
-			playListIntro.getSongs().add(sample1);
-			playListIntro.getSongs().add(sample2);
-			
+
 			FollowLine followline1 = new FollowLine(pidController, CS, motionController, dragon);
 			followline1.calibrate();
+
+			File sample = dragon.sample_dragons_daughter.getFile();
+
+			Sound.playSample(sample, Sound.VOL_MAX);
 			
-			playListIntro.run();
+			LCD.clear();
+			LCD.drawString("Druk ENTER", 3, 3);
+			LCD.drawString("om te starten", 2, 4);
+			Delay.msDelay(500);
+			Button.ENTER.waitForPress();
 
 			Runnable playlistDragon = dragon.playlist;
 			Runnable followLine2 = new FollowLine(pidController, CS, motionController, dragon);
 
 			Thread thread1 = new Thread(playlistDragon);
-			Delay.msDelay(1000);
 			Thread thread2 = new Thread(followLine2);
 
 			// Start threads

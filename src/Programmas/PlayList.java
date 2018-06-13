@@ -32,13 +32,17 @@ public class PlayList implements Runnable, PlayMusic {
 	
 	@Override
 	public void play() {
-		Button.ESCAPE.waitForPress();
-		while (Button.ESCAPE.isUp() && play == true) {
+		while (play && Button.ENTER.isUp()) {
 			for (int i = 0; i < songs.size(); i++) {
 				if (getSongFile(i).exists()) {
 					Sound.playSample(getSongFile(i), Sound.VOL_MAX);
 				}
+				Button.waitForAnyPress(500);
+//				if (Button.ESCAPE.isDown()) {
+//					play = false;
+//				}
 			}
+			
 		}
 
 	}
@@ -73,5 +77,7 @@ public class PlayList implements Runnable, PlayMusic {
 		String title = songs.get(index).getTitle();
 		return title;
 	}
+	
+	
 
 }

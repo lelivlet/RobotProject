@@ -25,14 +25,18 @@ public class MusicPlayer implements PlayMusic {
 	}
 	
 	public void play() {
-		while (Button.ESCAPE.isUp() && play == true) {
+		while (play) {
 			for (int i = 0; i < playlist.getLenght(); i++) {
 				LCD.clear();
 				if (playlist.getSongFile(i).exists()) {
 					LCD.drawString(playlist.getTitle(i), 0, 3);
 					Sound.playSample(playlist.getSongFile(i), Sound.VOL_MAX);
 				}
-				
+				Button.waitForAnyPress(500);
+				if (Button.ESCAPE.isDown()) {
+					play = false;
+				}
+
 			}
 		}
 
