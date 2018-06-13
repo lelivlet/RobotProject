@@ -4,7 +4,7 @@ import lejos.hardware.Button;
 import lejos.hardware.Key;
 import lejos.hardware.Sound;
 import lejos.hardware.lcd.LCD;
-import lejos.robotics.Color;
+import lejos.robotics.Color; // Kan wellicht weg?
 import lejos.utility.Delay;
 import models.ColorSensor;
 import models.MotionController;
@@ -23,17 +23,17 @@ public class MasterMind {
 		this.CS = CS;
 		this.BW = BW;
 	}
-	
-	// TODO MISSCHIEN WAT MOOIER WEERGEVEN OP DE BRICK!!
-	
 
 	// Creëer een random raadsel
-	public int[] createRiddle() { // Naamgeving kan anders
+	public int[] createRiddle() {
 		int[] riddle = new int[4];
 		for (int i = 0; i < riddle.length; i++) {
 			int randomNumber = ((int) (Math.random() * 6));
 			riddle[i] = randomToNumber[randomNumber];
-			LCD.drawString(String.format("%s", numberToColor[riddle[i]]), 0, i); // TODO VERWIJDEREN WANT TEST***
+			
+			// Voor test doeleinden
+//			LCD.drawString(String.format("%s", numberToColor[riddle[i]]), 0, i);
+//			Delay.msDelay(5000); // Laat de oplossing even 5 seconde zien
 		}
 		return riddle;
 	}
@@ -164,8 +164,8 @@ public class MasterMind {
 			LCD.clear();
 			
 			if (numberGuessedCorrectly[0] == 4) {
-				LCD.drawString("Gefeliciteerd, je hebt gewonnen!!", 0, 3);
-				LCD.drawString("*********************************", 0, 4);
+				LCD.drawString("**Gefeliciteerd**", 0, 2);
+				LCD.drawString("je hebt gewonnen!", 0, 3);
 				Sound.systemSound(true, 2); // Geeft een descending arpeggio
 				Sound.systemSound(true, 2); // Geeft een descending arpeggio
 				Delay.msDelay(5000); // Laat eerst 5 sec zien dat je gewonnen hebt
@@ -173,11 +173,13 @@ public class MasterMind {
 				break;
 			} else if (i == 11 && numberGuessedCorrectly[0] != 4) {
 				LCD.clear();
-				LCD.drawString("Helaas, je hebt de kleurencode niet kunnen raden.", 0, 3);
+				LCD.drawString("Helaas, je hebt de", 0, 1);
+				LCD.drawString("kleurencode niet", 0, 2);
+				LCD.drawString("kunnen raden.", 0, 3);
 				Sound.systemSound(true, 3); // Geeft een ascending arpeggio
 				Delay.msDelay(3000); // Laat 3 sec bovenstaand bericht zien
 				LCD.clear();
-				LCD.drawString("De kleurencode was: ", 0, 0);
+				LCD.drawString("De kleurencode was", 0, 0);
 				for (int j = 0; j < riddle.length; j++) {
 					LCD.drawString(String.format("%s", numberToColor[riddle[j]]), 0, j+1);
 				}
