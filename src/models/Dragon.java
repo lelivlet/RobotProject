@@ -1,6 +1,11 @@
 package models;
 
+import java.io.File;
+
+import Programmas.PlayList;
+import Programmas.Song;
 import lejos.hardware.Button;
+import lejos.robotics.RegulatedMotor;
 import lejos.utility.Delay;
 
 /**
@@ -9,27 +14,59 @@ import lejos.utility.Delay;
  */
 public class Dragon implements Runnable {
 
-	private static final int CORRECTION_FACTOR = 1; // correctie factor ivm de tandwielen
 	private MotionController motionController;
-
-	public Dragon() {
-		// TODO Auto-generated constructor stub
+	private static final int CORRECTION_FACTOR = 5; // correctie factor ivm de tandwielen
+	private int speedTail = 200;
+	private int speedHead = speedTail * CORRECTION_FACTOR;
+	
+	public Song sample_dragon;
+	public Song sample_dragon_breath;
+	public Song sample_dragon_roar;
+	public Song sample_dragons_daughter;
+	public Song theme_song;
+	public PlayList playlist;
+	
+	
+	public Dragon(MotionController motionController) {
+		this.motionController = motionController;
+		this.sample_dragon = new Song("Dragon", new File("dragon.wav"));
+		this.sample_dragon_breath = new Song("Dragon breath", new File("dragon_breath"));
+		this.sample_dragon_roar = new Song("Dragon roar", new File("dragon_roar"));
+		this.sample_dragons_daughter = new Song("Dragons Daughter", new File("the_dragons_daughter.wav"));
+		this.theme_song = new Song("Daenerys theme", new File("daenerys_theme_got"));
+		this.playlist = new PlayList();
+		playlist.getSongs().add(sample_dragon_roar);
+		playlist.getSongs().add(theme_song);
+		playlist.getSongs().add(sample_dragon);
+		playlist.getSongs().add(theme_song);
+		playlist.getSongs().add(sample_dragon_breath);
+		playlist.getSongs().add(theme_song);
 	}
 
 	public void run() {
+		Button.DOWN.waitForPress();
+		RegulatedMotor[] syncList = {motionController.getmB()};
+		motionController.getmC().synchronizeWith(syncList );
+		motionController.getmC().startSynchronization();
 		while (Button.DOWN.isUp()) {
+			headRotateTo(0);
+			tailRotateTo(0);
+			Delay.msDelay(500);	
 			headRotateTo(90);
 			tailRotateTo(-90);
 			Delay.msDelay(500);	
-			Button.DOWN.waitForPress();
+			headRotateTo(-90);
+			tailRotateTo(90);
 		}
 	}
 
 	public void headRotateTo(int angle) {
+		motionController.getmB().setSpeed(speedHead);
 		motionController.getmB().rotate(angle * CORRECTION_FACTOR);
 	}
 
 	public void tailRotateTo(int angle) {
+		motionController.getmB().setSpeed(speedTail);
 		motionController.getmC().rotate(angle);
 	}
 }

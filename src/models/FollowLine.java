@@ -1,10 +1,6 @@
 package models;
 
-import java.io.File;
-
-import Programmas.*;
 import lejos.hardware.Button;
-import lejos.hardware.Sound;
 import lejos.hardware.lcd.LCD;
 import lejos.utility.Delay;
 import lejos.utility.TextMenu;
@@ -14,9 +10,10 @@ public class FollowLine implements Runnable {
 	private AdvPID_Controller pidController;
 	private ColorSensor CS;
 	private MotionController motionController;
+	private Dragon dragon;
 	private boolean rightSide;
-	private static final float SPEED_RATIO = (float) 0.5; // verhouding tussen de rijsnelheid en de snelheid van het hoofd van de robot
-	private final static int STACK_SIZE = 1000; // grootte van de stack voor de moving average
+	private final static int STACK_SIZE = 10; // grootte van de stack voor de moving average wordt gebruikt om de bewegingen van de dragon vloeiend te maken
+	private final static float CORRECTION_FACTOR = 2; // corrigeerd de waarde voor de dragon bewegingen
 
 	// default
 	private static final float SPEED_DEFAULT = (float) 100;
@@ -42,11 +39,12 @@ public class FollowLine implements Runnable {
 	private float kiTest = (float) 0.0;
 	private float kdTest = (float) 2.3;
 
-	public FollowLine(PID_Controller pidController, ColorSensor CS, MotionController motionController) {
+	public FollowLine(PID_Controller pidController, ColorSensor CS, MotionController motionController, Dragon dragon) {
 		super();
 		this.pidController = (AdvPID_Controller) pidController;
 		this.CS = CS;
 		this.motionController = motionController;
+		this.dragon = dragon;
 		this.rightSide = true;
 		this.pidController.setStackSize(STACK_SIZE);
 	}
@@ -98,17 +96,19 @@ public class FollowLine implements Runnable {
 			motionController.setSnelheid(SPEED_DEFAULT);
 
 		}
+	
+
+	}
+
+	public void run() {
 		LCD.clear();
 		LCD.drawString("Druk ENTER", 3, 3);
 		LCD.drawString("om te starten", 2, 4);
 		Delay.msDelay(500);
 		Button.ENTER.waitForPress();
 
-	}
-
-	public void run() {
 		LCD.clear();
-		LCD.drawString("Volg de lijn!", 3, 3);
+		LCD.drawString("Go Dragon!!!", 3, 3);
 
 		float speed = motionController.getSnelheid();
 		float midpoint = PID_Controller.getMidpoint();
@@ -123,6 +123,11 @@ public class FollowLine implements Runnable {
 			float currentBrightness = CS.getCurrentNormalisedBrightness();
 			float correction = pidController.getCorrection(currentBrightness);
 			float movingAverage = pidController.getMovingAverage();
+			
+			// dragon bewegingen
+			dragon.headRotateTo((int) (90 * movingAverage * CORRECTION_FACTOR));
+			dragon.tailRotateTo((int) (90 * movingAverage));
+			
 			// rightSide = true, dan rijdt de robot rechtsom, ander linksom
 			// beide motoren worden bijgestuurd met de correctiefactor
 			if (rightSide) {
@@ -130,7 +135,6 @@ public class FollowLine implements Runnable {
 			} else {
 				motionController.setEngineSpeed(speed * (midpoint + correction), speed * (midpoint - correction));
 			}
-			motionController.getmB().setSpeed(speed * movingAverage * SPEED_RATIO);
 		}
 		LCD.clear();
 		LCD.drawString("Gestopt", 3, 3);

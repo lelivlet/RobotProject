@@ -16,10 +16,9 @@ import lejos.utility.Delay;
 import menu.TrickMenu;
 import lejos.utility.TextMenu;
 
-
 public class Robot {
 	// private fields
-	
+
 	// Initialisatie van het bijbehorende bewegingsapparaat, sensor en controller
 	private MotionController motionController;
 	private PID_Controller pidController;
@@ -27,7 +26,7 @@ public class Robot {
 	private MasterMind mastermind;
 	private Draw draw;
 	private TrickMenu trickMenu;
-	
+	private Dragon dragon;
 
 	// Constructor
 	public Robot() {
@@ -35,42 +34,37 @@ public class Robot {
 		this.motionController = new MotionController();
 		this.pidController = new AdvPID_Controller();
 		this.CS = new ColorSensor();
-		
-//		this.mastermind = new MasterMind(CS);
-//		this.draw = new Draw();
-//		this.trickMenu = new TrickMenu(this);
+		this.dragon = new Dragon(motionController);
+		// this.mastermind = new MasterMind(CS);
+		// this.draw = new Draw();
+		// this.trickMenu = new TrickMenu(this);
+
 	}
 
 	public void run() { // maak een keuze voor een programma
 		LCD.clear();
-		String[] items = { "Volg een lijn", "Speel Mastermind", "Ga tekenen", "Speel playlist" };
+		String[] items = { "Volg een lijn", "Speel Mastermind", "Ga tekenen", "Speel playlist", "Demo Dragon" };
 		TextMenu selectMenu = new TextMenu(items, 2, "Wat wil je doen?");
 		int selectedItem = selectMenu.select();
 		if (selectedItem == 0) {
-			
-			PlayList playlist = new MusicPlayer().getPlaylist();
-			Song song1 = new Song("Carnaval festival", new File("carnaval_festival.wav"));
-			playlist.getSongs().add(song1);
-			Song song2 = new Song("Mission Impossible", new File("mission_impossible.wav"));
-			playlist.getSongs().add(song2);
-			Song song3 = new Song("Star Wars", new File("star_wars.wav"));
-			playlist.getSongs().add(song3);
-			
-			FollowLine followline1 = new FollowLine(pidController, CS, motionController);
+
+			FollowLine followline1 = new FollowLine(pidController, CS, motionController, dragon);
 			followline1.calibrate();
-			
-			Runnable playlist1 = playlist;
-			Runnable followLine2 = new FollowLine(pidController, CS, motionController);
-									
-			Thread thread1 = new Thread(playlist1);
-			Delay.msDelay(500);
+
+			Sound.playSample((File) (dragon.sample_dragon_roar.getFile()), Sound.VOL_MAX);
+			Sound.playSample((File) (dragon.sample_dragons_daughter.getFile()), Sound.VOL_MAX);
+
+			Runnable playlistDragon = dragon.playlist;
+			Runnable followLine2 = new FollowLine(pidController, CS, motionController, dragon);
+
+			Thread thread1 = new Thread(playlistDragon);
+			Delay.msDelay(1000);
 			Thread thread2 = new Thread(followLine2);
-			
-						
+
 			// Start threads
 			thread1.start();
 			thread2.start();
-			
+
 		} else if (selectedItem == 1) {
 			// TODO
 			// Mastermind mastermind = = new MasterMind(CS);
@@ -82,9 +76,19 @@ public class Robot {
 		} else if (selectedItem == 3) {
 			MusicPlayer musicPlayer = new MusicPlayer();
 			musicPlayer.run();
+		} else if (selectedItem == 4) {
+			Runnable demoDragon = dragon;
+			Runnable playlistDragon = dragon.playlist;
+			
+			Thread thread1 = new Thread(playlistDragon);
+			Delay.msDelay(1000);
+			Thread thread2 = new Thread(demoDragon);
+			// Start threads
+			thread1.start();
+			thread2.start();
+			
 		}
+
 	}
 
-	
-	
 }
