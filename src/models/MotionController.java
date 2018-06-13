@@ -61,6 +61,15 @@ public class MotionController {
 		mD.forward();
 	}
 
+	public void backward(int speed) {
+
+		mA.setSpeed(speed);
+		mD.setSpeed(speed);
+
+		mA.backward();
+		mD.backward();
+	}
+	
 	// A method to make a circle.
 	public void turnCircularRight(int speed, double turnFactor) {
 

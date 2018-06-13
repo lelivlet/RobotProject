@@ -79,13 +79,14 @@ public class Draw {
 	public void drawTriangle(int length, char side) {
 		
 		// hier moeten waardes aangepast worden om te compenseren voor het gebrek aan nauwkeurigheid vd motoren;
-		int[] correctionValues = {140, 140, 140};
+		int[] correctionValues = {160, 150, 120};
 		
 		// draw a line 4 times
 		for (int i = 0; i < 3; i++) {
 
 			pathFinder.setRotations(pathFinder.getRotationDegreesFromLength(length));
 			pathFinder.waitComplete();
+			pathFinder.backward(SPEED);
 
 			pathFinder.rotateTo(side, correctionValues[i]);
 			pathFinder.waitComplete();
