@@ -1,4 +1,4 @@
-package Programmas;
+package programs;
 
 import java.io.File;
 import java.util.ArrayList;

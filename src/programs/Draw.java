@@ -4,7 +4,7 @@
  * Author: Veronique Roelvink en Joey Weidema
  */
 
-package Programmas;
+package programs;
 
 import lejos.hardware.lcd.LCD;
 import lejos.utility.Delay;
