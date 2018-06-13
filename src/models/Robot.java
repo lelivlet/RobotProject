@@ -16,7 +16,6 @@ import programs.PlayList;
 import programs.Song;
 import lejos.utility.TextMenu;
 
-
 public class Robot {
 	// private fields
 
@@ -40,7 +39,15 @@ public class Robot {
 		this.mastermind = new MasterMind(CS, motionController);
 		this.draw = new Draw(motionController);
 		this.trickMenu = new TrickMenu(this);
-		this.musicPlayer = new MusicPlayer();		
+		this.musicPlayer = new MusicPlayer();
+	}
+
+	public Draw getDraw() {
+		return draw;
+	}
+
+	public MotionController getMotionController() {
+		return motionController;
 	}
 
 	public void run() { // maak een keuze voor een programma
@@ -56,7 +63,7 @@ public class Robot {
 			File sample = dragon.sample_dragons_daughter.getFile();
 
 			Sound.playSample(sample, Sound.VOL_MAX);
-			
+
 			LCD.clear();
 			LCD.drawString("Druk ENTER", 3, 3);
 			LCD.drawString("om te starten", 2, 4);
@@ -104,36 +111,24 @@ public class Robot {
 			}
 			motionController.close();
 		}
-	}	
-	
+	}
+
+	public void runDraw() {
+		draw.runDrawSequence();
+	}
+
+	public void initAndRunFollowLine() {
+		FollowLine newFollowline = new FollowLine(pidController, CS, motionController, dragon);
+		newFollowline.run();
+	}
+
+	public void runMasterMind() {
+		mastermind.playMasterMind();
+	}
+
 	// runners for TrickMenu
 	public void runMusic() {
 		MusicPlayer musicPlayer = new MusicPlayer();
 		musicPlayer.run();
 	}
-	
-	public void initAndRunFollowLine() {
-		FollowLine newFollowline = new FollowLine(pidController, CS, motionController, dragon);
-		newFollowline.run();
-	}
-	
-	public void runMasterMind() {
-		mastermind.playMasterMind();
-	}
-	
-	public void runDraw() {
-		draw.runDrawSequence();
-	}
-
-	// Getters
-	public MotionController getMotionController() {
-		return motionController;
-	}
-
-	public Draw getDraw() {
-		return draw;
-	}
-	
-	
-	
 }

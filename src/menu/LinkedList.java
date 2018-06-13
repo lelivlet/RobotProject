@@ -1,5 +1,5 @@
 /*
- * A linked list class with functional methods.
+ * A linked list class with functional methods. 
  * 
  * Author: Joey Weidema // Jorik Noorda
  * 

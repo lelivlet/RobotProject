@@ -1,5 +1,5 @@
 /*
- * A menu for the tricks; The menu isa linked list.
+ * A menu for the tricks; The menu isa linked list. 
  * 
  * Author: Joey Weidema // Jorik Noorda
  * 
@@ -60,34 +60,25 @@ public class TrickMenu {
 		LCD.drawString(((MenuItem) (currentItem.getNext())).trickName, 0, 5);
 	}
 
-	public void runMenu() {
-
-		drawMenu();
-
-		int button = Button.waitForAnyPress();
-
-		switch (button) {
-		case Button.ID_DOWN:
-			pressDown();
+	public void play(String value) {
+	
+		LCD.clear();
+		Delay.msDelay(1000);
+	
+		switch (value) {
+		case valueFirstTrick:
+			robot.initAndRunFollowLine();
 			break;
-		case Button.ID_UP:
-			pressUp();
+		case valueSecondTrick:
+			robot.runMasterMind();
 			break;
-		case Button.ID_ENTER:
-			pressEnter();
+		case valueThirdTrick:
+			robot.runDraw();
 			break;
-		case Button.ID_ESCAPE:
-			pressEsc();
+		case valueFourthTrick:
+			robot.runMusic();
 			break;
 		}
-		runMenu();
-	}
-
-	public void pressUp() {
-
-		currentItem = currentItem.getPrevious();
-
-		runMenu();
 	}
 
 	public void pressDown() {
@@ -112,25 +103,34 @@ public class TrickMenu {
 
 	}
 
-	public void play(String value) {
+	public void pressUp() {
+	
+		currentItem = currentItem.getPrevious();
+	
+		runMenu();
+	}
 
-		LCD.clear();
-		Delay.msDelay(1000);
-
-		switch (value) {
-		case valueFirstTrick:
-			robot.initAndRunFollowLine();
+	public void runMenu() {
+	
+		drawMenu();
+	
+		int button = Button.waitForAnyPress();
+	
+		switch (button) {
+		case Button.ID_DOWN:
+			pressDown();
 			break;
-		case valueSecondTrick:
-			robot.runMasterMind();
+		case Button.ID_UP:
+			pressUp();
 			break;
-		case valueThirdTrick:
-			robot.runDraw();
+		case Button.ID_ENTER:
+			pressEnter();
 			break;
-		case valueFourthTrick:
-			robot.runMusic();
+		case Button.ID_ESCAPE:
+			pressEsc();
 			break;
 		}
+		runMenu();
 	}
 }
 
