@@ -12,11 +12,22 @@ import java.util.Queue;
 public class StackFloats {
 	
 	private Queue<Float> queue = new ArrayDeque<>();
-	int size;
+	private int size;
+		
 	
-	
-	
-	
+	public StackFloats(int size) {
+		this();
+		this.size = size;
+	}
+
+
+
+	public StackFloats() {
+		super();
+	}
+
+
+
 	public Queue<Float> getQueue() {
 		return queue;
 	}
@@ -39,14 +50,6 @@ public class StackFloats {
 		this.size = size;
 	}
 
-
-
-	public StackFloats(int size) {
-		super();
-		this.size = size;
-	}
-	
-	
 	
 	public void addValue(float value) {
 		if (queue.size() >= size) {

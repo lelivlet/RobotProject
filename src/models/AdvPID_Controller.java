@@ -1,9 +1,8 @@
 package models;
 
-public class AdvPID_Contoller extends PID_Controller {
+public class AdvPID_Controller extends PID_Controller {
 	
-	private final static int DEFAULT_SIZE = 5; 
-	private StackFloats stack = new StackFloats(DEFAULT_SIZE);
+	private StackFloats stack = new StackFloats();
 	private float movingAverage;
 	
 	public float getMovingAverage() {
@@ -11,7 +10,7 @@ public class AdvPID_Contoller extends PID_Controller {
 	}
 
 
-	public void calculateMovingAverage() {
+	private void calculateMovingAverage() {
 		float sum = 0;
 		for (Float value : stack.getQueue()) {
 			sum += value;
@@ -34,5 +33,8 @@ public class AdvPID_Contoller extends PID_Controller {
 		return correction;
 	}
 	
+	public void setStackSize(int stackSize) {
+		stack.setSize(stackSize);
+	}
 	
 }

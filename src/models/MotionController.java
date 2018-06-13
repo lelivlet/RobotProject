@@ -15,18 +15,32 @@ public class MotionController {
 	// Motor initialization
 	private EV3LargeRegulatedMotor mA;
 	private EV3LargeRegulatedMotor mD;
+	private EV3MediumRegulatedMotor mB;
+	private EV3MediumRegulatedMotor mC;
+
+	
 
 	// no args Constructor
 	public MotionController() {
 		super();
 		this.mA = new EV3LargeRegulatedMotor(MotorPort.A);
 		this.mD = new EV3LargeRegulatedMotor(MotorPort.D);
+		this.mB = new EV3MediumRegulatedMotor(MotorPort.B);
+		this.mC = new EV3MediumRegulatedMotor(MotorPort.C);
 	}
 
 	// Constructor met snelheid
 	public MotionController(float snelheid) {
 		super();
 		this.snelheid = snelheid;
+	}
+	
+	public EV3MediumRegulatedMotor getmB() {
+		return mB;
+	}
+
+	public void setmB(EV3MediumRegulatedMotor mB) {
+		this.mB = mB;
 	}
 
 	// Methodes:
@@ -135,5 +149,11 @@ public class MotionController {
 		// Geef de motoren vrij
 		mA.close();
 		mD.close();
+		mB.close();
+		mC.close();
+	}
+
+	public EV3MediumRegulatedMotor getmC() {
+		return mC;
 	}
 }

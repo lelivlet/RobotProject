@@ -10,6 +10,8 @@ import Programmas.PlayList;
 import Programmas.Song;
 import lejos.hardware.Sound;
 import lejos.hardware.lcd.LCD;
+import lejos.hardware.motor.EV3MediumRegulatedMotor;
+import lejos.internal.ev3.EV3Battery;
 import lejos.utility.Delay;
 import menu.TrickMenu;
 import lejos.utility.TextMenu;
@@ -25,13 +27,15 @@ public class Robot {
 	private MasterMind mastermind;
 	private Draw draw;
 	private TrickMenu trickMenu;
+	
 
 	// Constructor
 	public Robot() {
 		super();
 		this.motionController = new MotionController();
-		this.pidController = new PID_Controller();
+		this.pidController = new AdvPID_Controller();
 		this.CS = new ColorSensor();
+		
 //		this.mastermind = new MasterMind(CS);
 //		this.draw = new Draw();
 //		this.trickMenu = new TrickMenu(this);
