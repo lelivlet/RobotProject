@@ -37,7 +37,7 @@ public class Draw {
 	}
 
 	// kan beter maar doet wat ie moet doen.
-	public void drawConcentricSpiral() {
+	public void drawNestedSpiral() {
 	
 		double SPIRAL_TURN_FACTOR = 1.75;
 	
@@ -115,29 +115,31 @@ public class Draw {
 		LCD.drawString("Now drawing ...", 0, 3);
 	}
 
+	
+	// TRIANGLE??
 	public void runDrawSequence() {
 
 		while (Button.ESCAPE.isUp()) {
 			LCD.clear();
-			LCD.drawString("Press ENTER to draw fig1.", 0, 3);
+			LCD.drawString("Press ENTER to draw fig1: SQUARE", 0, 3);
 			waitForEnter();
 			nowDrawing();
 
-			drawPentagon(20, 'L');
+			drawPentagon(20, 'R');
 
 			LCD.clear();
-			LCD.drawString("Press ENTER to draw fig2.", 0, 3);
+			LCD.drawString("Press ENTER to draw fig2: TRIANGLE", 0, 3);
 			waitForEnter();
 			nowDrawing();
 
-			drawCircle();
+			drawTriangle(20, 'R');
 
 			LCD.clear();
-			LCD.drawString("Press ENTER to draw fig3.", 0, 3);
+			LCD.drawString("Press ENTER to draw fig3: NESTED SPIRAL", 0, 3);
 			waitForEnter();
 			nowDrawing();
 
-			drawConcentricSpiral();
+			drawNestedSpiral();
 		}
 		System.exit(1);
 	}
