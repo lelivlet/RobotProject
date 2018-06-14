@@ -4,7 +4,6 @@ import lejos.hardware.Button;
 import lejos.hardware.Key;
 import lejos.hardware.Sound;
 import lejos.hardware.lcd.LCD;
-import lejos.robotics.Color; // Kan wellicht weg?
 import lejos.utility.Delay;
 import models.ColorSensor;
 import models.MotionController;
@@ -17,9 +16,18 @@ import models.MotionController;
  *
  */
 public class MasterMind {
+	// Attributen van de Mastermind klasse
+	private static final int GUESS_OUT_OF_EQUATION = 99;
+	private static final int TEMP_RIDDLE_OUT_OF_EQUATION = 66;
+	private static final double KLEUR_AFSTAND = 6.5;
+	private static final double START_AFSTAND = 4.5;
 	// Colorsenor --> 0 = rood, 1 = groen, 2 = blauw, 3 = geel, 6 = wit, 7 = zwart
 	private int[] guess = new int[4];
 	private int[] randomToNumber = { 0, 1, 2, 3, 6, 7 };
+
+	// In onderstaande numberToColor zitten op index 4 en 5 lege Strings omdat 4 en
+	// 5 niet door de colorsensor als output teruggegeven kan worden met de EV3
+	// setup die we gebruiken
 	private String[] numberToColor = { "rood", "groen", "blauw", "geel", "", "", "wit", "zwart" };
 	private ColorSensor CS;
 	private MotionController BW;
@@ -38,7 +46,7 @@ public class MasterMind {
 			int randomNumber = ((int) (Math.random() * 6));
 			riddle[i] = randomToNumber[randomNumber];
 
-			// Voor test doeleinden
+			// // Voor test doeleinden
 			// LCD.drawString(String.format("%s", numberToColor[riddle[i]]), 0, i);
 			// Delay.msDelay(5000); // Laat de oplossing even 5 seconde zien
 		}
@@ -59,40 +67,40 @@ public class MasterMind {
 		for (int i = 0; i < guess.length; i++) {
 			if (i == 0) {
 				// Beweeg naar eerste meetpunt
-				BW.setRotations(BW.getRotationDegreesFromLength(4.5));
+				BW.setRotations(BW.getRotationDegreesFromLength(START_AFSTAND));
 				BW.waitComplete();
+
 				// Lees de kleur in
 				guess[i] = CS.getColorID();
-
-				// TODO IS NIET HEEL NETJES! (Kan eventueel ook een muziekje of toontje??)
 				// Heel soms wordt geel aangegeven als 13 (bruin) daarom hebben we deze failsafe
 				// ingebouwd
 				if (guess[i] == 13) {
 					guess[i] = 3;
 				}
 
-				int test = guess[i];
 				// Schrijf op display wat er gemeten is
-				LCD.drawString(String.format("%s", numberToColor[test]), 0, i);
+				LCD.drawString(String.format("%s", numberToColor[guess[i]]), 0, i);
+
 			} else if (i > 0 && i < guess.length) {
-				BW.setRotations(BW.getRotationDegreesFromLength(6.5));
+				// Rijdt naar de volgende punten en lees de ingegeven kleur (Afstand tussen
+				// zwarte stip en meetpunten is namelijk niet gelijk)
+				BW.setRotations(BW.getRotationDegreesFromLength(KLEUR_AFSTAND));
 				BW.waitComplete();
+
 				// Lees de kleur in
 				guess[i] = CS.getColorID();
-
 				// Heel soms wordt geel aangegeven als 13 (bruin) daarom hebben we deze niet zo
 				// nette failsafe ingebouwd
 				if (guess[i] == 13) {
 					guess[i] = 3;
 				}
 
-				int test = guess[i];
 				// Schrijf op display wat er gemeten is
-				LCD.drawString(String.format("%s", numberToColor[test]), 0, i);
+				LCD.drawString(String.format("%s", numberToColor[guess[i]]), 0, i);
 			}
 		}
 		// Rij terug en geef de guess terug
-		BW.setRotations(BW.getRotationDegreesFromLength(-(4.5 + (3 * 6.5))));
+		BW.setRotations(BW.getRotationDegreesFromLength(-(START_AFSTAND + (3 * KLEUR_AFSTAND))));
 		BW.waitComplete();
 		return guess;
 	}
@@ -104,8 +112,8 @@ public class MasterMind {
 		for (int i = 0; i < riddle.length; i++) {
 			if (guess[i] == riddle[i]) {
 				numberFullyCorrect++;
-				riddle[i] = 66; // TODO
-				guess[i] = 99; // TODO
+				riddle[i] = TEMP_RIDDLE_OUT_OF_EQUATION;
+				guess[i] = GUESS_OUT_OF_EQUATION;
 			}
 		}
 		// Roep de numberColorsGuessed methode aan
@@ -123,7 +131,8 @@ public class MasterMind {
 				if (i != j) {
 					if (guess[i] == tempRiddle[j]) {
 						numberColorCorrect++;
-						tempRiddle[j] = 66; // OP het moment dat deze kleur al gevonden is, wordt de waarde binnen deze
+						tempRiddle[j] = TEMP_RIDDLE_OUT_OF_EQUATION; // OP het moment dat deze kleur al gevonden is,
+																		// wordt de waarde binnen deze
 						// methode op 66 gezet
 						break;
 					}
@@ -147,29 +156,43 @@ public class MasterMind {
 		CS.setFloodLight(6);
 		CS.setColorIdMode();
 
-		// cre�ert een raadsel
+		// Creeert een raadsel
 		int[] riddle = createRiddle();
 
 		// Men kan 12 keer raden
 		for (int i = 0; i < 12; i++) {
-			// creeer eerst een tijdelijke array
+			// Creeer eerst een tijdelijke array
 			int[] tempRiddle = new int[4];
+			// Vult de tijdelijke array met de waarden van riddle zodat deze waarden
+			// gecheckt en aangepast kunnen worden zonder dat de daadwerkelijke riddle
+			// veranderd wordt.
 			for (int j = 0; j < riddle.length; j++) {
 				tempRiddle[j] = riddle[j];
 			}
+
+			// Print welke ronde het is en hoeveel rondes er nog komen
 			LCD.clear();
 			LCD.drawString(String.format("Ronde #%d", i + 1), 0, 0);
 			LCD.drawString(String.format("Nog %d rondes.", 12 - i), 0, 1);
 
+			// Druk op start om verder te gaan
 			LCD.drawString("Druk op ENTER", 0, 4);
 			waitForKey(Button.ENTER);
 			LCD.clear();
 
+			// Hier wordt een guess gedaan
 			int[] guess = takeAGuess();
 			int[] numberGuessedCorrectly = numbersGuessed(tempRiddle, guess);
 			waitForKey(Button.ENTER);
 			LCD.clear();
 
+			// Hier staat respectievelijk:
+			// 1. Als de 4 kleuren goed zijn en op de juiste plek zijn geplaatst, dan heb je
+			// gewonnen krijg je dat te zien voor 5 sec.
+			// 2. Als je 12 rondes hebt gehad en het nogsteeds niet goed hebt, heb je helaas
+			// verloren en krijg je de oplossing te zien
+			// 3. Hier wordt feedback gegeven op de waargenomen guess, zolang het nog niet
+			// geraden is en er nog geen 12 ronden verstreken zijn
 			if (numberGuessedCorrectly[0] == 4) {
 				LCD.drawString("**Gefeliciteerd**", 0, 2);
 				LCD.drawString("je hebt gewonnen!", 0, 3);
@@ -203,6 +226,9 @@ public class MasterMind {
 				LCD.clear();
 			}
 		}
+
+		// Wanneer er een spel verstreken is, wordt er gevraagd om nog een spel te
+		// spelen (of niet). Enter is nog een spel, andere knop is STOP
 		LCD.drawString("Wil je nog een keer spelen?", 0, 1);
 		LCD.drawString("ENTER = JA", 0, 3);
 		LCD.drawString("Andere knop = NEE", 0, 4);
@@ -214,7 +240,7 @@ public class MasterMind {
 		LCD.clear();
 	}
 
-	// TODO HIER KUNNEN WE EEN INTERFACE VOOR MAKEN
+	// Wait for Key methode
 	public void waitForKey(Key key) {
 		while (key.isUp()) {
 			Delay.msDelay(100);
