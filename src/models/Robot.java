@@ -9,17 +9,19 @@ import lejos.hardware.motor.EV3MediumRegulatedMotor;
 import lejos.internal.ev3.EV3Battery;
 import lejos.utility.Delay;
 import menu.TrickMenu;
+import music.MusicPlayer;
+import music.PlayList;
+import music.Song;
+import pidController.AdvPID_Controller;
 import programs.Draw;
+import programs.FollowLine;
 import programs.MasterMind;
-import programs.MusicPlayer;
-import programs.PlayList;
-import programs.Song;
 import lejos.utility.TextMenu;
 
 public class Robot {
 	// Initialisatie van het bijbehorende bewegingsapparaat, sensor en controller
 	private MotionController motionController;
-	private PID_Controller pidController;
+	private AdvPID_Controller pidController;
 	private ColorSensor CS;
 	private MasterMind mastermind;
 	private Draw draw;
@@ -51,33 +53,33 @@ public class Robot {
 	// maak een keuze voor een programma
 	public void run() { 
 		LCD.clear();
-		String[] items = { "Volg een lijn", "Speel Mastermind", "Ga tekenen", "Speel playlist", "Demo Dragon" };
+		String[] items = { "Volg een lijn", "Speel Mastermind", "Ga tekenen", "Speel playlist", "DEMO Dragon", "DEMO volglijn"};
 		TextMenu selectMenu = new TextMenu(items, 2, "Wat wil je doen?");
 		int selectedItem = selectMenu.select();
 		if (selectedItem == 0) {
 
 			FollowLine followline1 = new FollowLine(pidController, CS, motionController, dragon);
-			followline1.calibrate();
-
-			File sample = dragon.sample_dragons_daughter.getFile();
-
-			Sound.playSample(sample, Sound.VOL_MAX);
-
-			LCD.clear();
-			LCD.drawString("Druk ENTER", 3, 3);
-			LCD.drawString("om te starten", 2, 4);
-			Delay.msDelay(500);
-			Button.ENTER.waitForPress();
-
-			Runnable playlistDragon = dragon.playlist;
-			Runnable followLine2 = new FollowLine(pidController, CS, motionController, dragon);
-
-			Thread thread1 = new Thread(playlistDragon);
-			Thread thread2 = new Thread(followLine2);
-
-			// Start threads
-			thread1.start();
-			thread2.start();
+			followline1.followLine();
+//			Sound.twoBeeps();
+//			File sample = dragon.sample_dragons_daughter.getFile();
+//
+//			Sound.playSample(sample, Sound.VOL_MAX);
+			
+//			LCD.clear();
+//			LCD.drawString("Druk ENTER", 3, 3);
+//			LCD.drawString("om te starten", 2, 4);
+//			Delay.msDelay(500);
+//			Button.ENTER.waitForPress();
+//			
+//			Runnable playlistDragon = dragon.playlist;
+//			Runnable followLine2 = new FollowLine(pidController, CS, motionController, dragon);
+//
+//			Thread thread1 = new Thread(playlistDragon);
+//			Thread thread2 = new Thread(followLine2);
+//
+//			// Start threads
+//			thread1.start();
+//			thread2.start();
 
 		} else if (selectedItem == 1) {
 			// TODO
@@ -89,27 +91,36 @@ public class Robot {
 			// draw.run();
 		} else if (selectedItem == 3) {
 			MusicPlayer musicPlayer = new MusicPlayer();
-			musicPlayer.run();
+			musicPlayer.play();
 		} else if (selectedItem == 4) {
+//			dragon.run();			
+			
 			Runnable demoDragon = dragon;
 			Runnable playlistDragon = dragon.playlist;
 
 			Thread thread1 = new Thread(playlistDragon);
 			Thread thread2 = new Thread(demoDragon);
+			
+			thread1.start();
+			thread2.start();
 
-			LCD.clear();
-			LCD.drawString("Druk ENTER", 3, 3);
-			LCD.drawString("om te starten", 2, 4);
-			Delay.msDelay(500);
-			Button.ENTER.waitForPress();
-
-			while (Button.ENTER.isUp()) {
-				thread1.start();
-				Delay.msDelay(1000);
-				thread2.start();
-			}
-			motionController.close();
-		}
+		
+		} else if (selectedItem == 5) {
+			FollowLine followline = new FollowLine(pidController, CS, motionController);
+//			followline.calibrate();
+//			LCD.clear();
+//			LCD.drawString("Druk ENTER", 3, 3);
+//			LCD.drawString("om te starten", 2, 4);
+//			Button.ENTER.waitForPress();
+			followline.calibrate();
+			followline.run();
+		}	
+	}	
+	
+	// TODO: MAke runners for MAstermind; after all runners made, and marvin is one, we can remove the getters above here for tricks. 
+	public void runMusic() {
+		MusicPlayer musicPlayer = new MusicPlayer();
+		musicPlayer.run();
 	}
 
 	public void runDraw() {
