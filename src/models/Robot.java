@@ -136,9 +136,4 @@ public class Robot {
 		mastermind.playMasterMind();
 	}
 
-	// runners for TrickMenu
-	public void runMusic() {
-		MusicPlayer musicPlayer = new MusicPlayer();
-		musicPlayer.run();
-	}
 }
