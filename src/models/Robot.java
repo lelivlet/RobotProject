@@ -18,8 +18,6 @@ import lejos.utility.TextMenu;
 
 
 public class Robot {
-	// private fields
-
 	// Initialisatie van het bijbehorende bewegingsapparaat, sensor en controller
 	private MotionController motionController;
 	private PID_Controller pidController;
@@ -43,7 +41,8 @@ public class Robot {
 		this.musicPlayer = new MusicPlayer();		
 	}
 
-	public void run() { // maak een keuze voor een programma
+	// maak een keuze voor een programma
+	public void run() { 
 		LCD.clear();
 		String[] items = { "Volg een lijn", "Speel Mastermind", "Ga tekenen", "Speel playlist", "Demo Dragon" };
 		TextMenu selectMenu = new TextMenu(items, 2, "Wat wil je doen?");
