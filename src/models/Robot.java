@@ -128,8 +128,12 @@ public class Robot {
 		Delay.msDelay(3000);
 		dragon.run();
 		
-		Runnable playlistDragon = dragon.playlist;
-		Runnable followLine = new FollowLine(pidController, CS, motionController, dragon);
+		PlayList playlist = new PlayList();
+		Song theme = new Song("", new File("daenerys_theme_got.wav"));
+		playlist.addSong(theme);
+		
+		Runnable playlistDragon = playlist;
+		Runnable followLine = new FollowLine(pidController, CS, motionController);
 
 		Thread thread1 = new Thread(playlistDragon);
 		Thread thread2 = new Thread(followLine);
