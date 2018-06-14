@@ -1,19 +1,19 @@
+/*
+ * A class that controls most of the movement of the robot.
+ * 
+ * @author Jorik Noorda en Joey Weidema
+ */
+
 package models;
 
 import lejos.hardware.motor.*;
 import lejos.hardware.port.*;
 
-/**
- * @author Jorik en Joey
- *
- */
-
 public class MotionController {
 	// Constanten
 	private float snelheid;
-	private final int rotationsToDegrees = ((360/61)/2); // 1 rotatie van het wiel --> maakt een hoek van 85 graden??
-
-	// Motor initialization
+	private final int rotationsToDegrees = ((360 / 61) / 2); // 1 rotatie van het wiel --> maakt een hoek van 85
+																// graden??
 	public EV3LargeRegulatedMotor mA;
 	private EV3LargeRegulatedMotor mD;
 	private EV3MediumRegulatedMotor mB;
@@ -31,33 +31,25 @@ public class MotionController {
 
 	}
 
-	// Constructor met snelheid
 	public MotionController(float snelheid) {
 		this();
 		this.snelheid = snelheid;
 	}
-	
-	public EV3MediumRegulatedMotor getmB() {
-		return mB;
+
+	public void backward(int speed) {
+
+		mA.setSpeed(speed);
+		mD.setSpeed(speed);
+
+		mA.backward();
+		mD.backward();
 	}
 
-	public void setmB(EV3MediumRegulatedMotor mB) {
-		this.mB = mB;
-	}
-
-	// Methodes:
-	/* Beweeg naar voren of naar achteren */
-	public void vooruitOfAchteruit(char voorOfAchter) {
-		mA.setSpeed(snelheid);
-		mD.setSpeed(snelheid);
-		// Geef snelheid in graden/sec
-		if (voorOfAchter == 'V') {
-			mA.forward();
-			mD.forward();
-		} else if (voorOfAchter == 'A') {
-			mA.backward();
-			mD.backward();
-		}
+	public void close() {
+		// Geef de motoren vrij
+		mA.close();
+		mD.close();
+		mB.close();
 	}
 
 	public void forward(int speed) {
@@ -69,56 +61,24 @@ public class MotionController {
 		mD.forward();
 	}
 
-	public void backward(int speed) {
-
-		mA.setSpeed(speed);
-		mD.setSpeed(speed);
-
-		mA.backward();
-		mD.backward();
-	}
-	
-	// A method to make a circle.
-	public void turnCircularRight(int speed, double turnFactor) {
-
-		int turningSpeed = (int) (speed * turnFactor);
-
-		mA.setSpeed(turningSpeed);
-		mD.setSpeed(speed);
-
-		mA.forward();
-		mD.forward();
+	public EV3MediumRegulatedMotor getmB() {
+		return mB;
 	}
 
-	// Set engine speed
-	public void setEngineSpeed(double engineLeft, double engineRight) {
-		this.mA.setSpeed((float) engineLeft);
-		this.mD.setSpeed((float) engineRight);
+	// A method to transform rotations to actual length (distance) in cm
+	public int getRotationDegreesFromLength(double length) {
+		double rotations = length / CIRCUMFERENCE;
+		return (int) (rotations * 360);
 	}
 
-	// Roteer methode
-	public void roteer(char richting, double draaisnelheid) {
-		if (richting == 'L') {
-			// mA.rotate(Gradenstapje); // 1 rotaties (360 graden) is ongeveer 30 graden in
-			// real life
-			setEngineSpeed(draaisnelheid, 0);
-		} else if (richting == 'R') {
-			setEngineSpeed(0, draaisnelheid);
-		} else {
-			System.out.println("Deze richting bestaat niet!");
-		}
-	}
-
-	public void waitComplete() {
-		mA.waitComplete();
-		mD.waitComplete();
+	public float getSnelheid() {
+		return snelheid;
 	}
 
 	// A method to transform rotations to degrees and then rotate to
 	public void rotateTo(char direction, int degrees) {
 
 		int rotations = degrees * rotationsToDegrees;
-;
 
 		if (direction == 'L') {
 
@@ -139,16 +99,25 @@ public class MotionController {
 		}
 	}
 
-	// A method to transform rotations to actual length (distance) in cm
-	public int getRotationDegreesFromLength(double length) {
-		double rotations = length / CIRCUMFERENCE;
-		return (int) (rotations * 360);
+	public void roteer(char richting, double draaisnelheid) {
+		if (richting == 'L') {
+			// mA.rotate(Gradenstapje); // 1 rotaties (360 graden) is ongeveer 30 graden in
+			// real life
+			setEngineSpeed(draaisnelheid, 0);
+		} else if (richting == 'R') {
+			setEngineSpeed(0, draaisnelheid);
+		} else {
+			System.out.println("Deze richting bestaat niet!");
+		}
 	}
 
-	// Volledige stop methode
-	public void volledigeStop() {
-		mA.stop();
-		mD.stop();
+	public void setEngineSpeed(double engineLeft, double engineRight) {
+		this.mA.setSpeed((float) engineLeft);
+		this.mD.setSpeed((float) engineRight);
+	}
+
+	public void setmB(EV3MediumRegulatedMotor mB) {
+		this.mB = mB;
 	}
 
 	public void setRotations(int rotations) {
@@ -156,26 +125,42 @@ public class MotionController {
 		this.mD.rotate(rotations, true);
 	}
 
-	public float getSnelheid() {
-		return snelheid;
-	}
-
 	public void setSnelheid(float snelheid) {
 		this.snelheid = snelheid;
 	}
 
-	// Reinitialise your engines 
-	  public void reinitialiseEngines() { 
-	     
-	    volledigeStop(); 
-	    close(); 
-	  } 
-	  
-	public void close() {
-		// Geef de motoren vrij
-		mA.close();
-		mD.close();
-		mB.close();
+	// A method used to make a circle.
+	public void turnCircularRight(int speed, double turnFactor) {
+
+		int turningSpeed = (int) (speed * turnFactor);
+
+		mA.setSpeed(turningSpeed);
+		mD.setSpeed(speed);
+
+		mA.forward();
+		mD.forward();
 	}
 
+	public void volledigeStop() {
+		mA.stop();
+		mD.stop();
+	}
+
+	public void vooruitOfAchteruit(char voorOfAchter) {
+		mA.setSpeed(snelheid);
+		mD.setSpeed(snelheid);
+		// Geef snelheid in graden/sec
+		if (voorOfAchter == 'V') {
+			mA.forward();
+			mD.forward();
+		} else if (voorOfAchter == 'A') {
+			mA.backward();
+			mD.backward();
+		}
+	}
+
+	public void waitComplete() {
+		mA.waitComplete();
+		mD.waitComplete();
+	}
 }

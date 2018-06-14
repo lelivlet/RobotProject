@@ -16,7 +16,6 @@ import programs.PlayList;
 import programs.Song;
 import lejos.utility.TextMenu;
 
-
 public class Robot {
 	// Initialisatie van het bijbehorende bewegingsapparaat, sensor en controller
 	private MotionController motionController;
@@ -38,7 +37,15 @@ public class Robot {
 		this.mastermind = new MasterMind(CS, motionController);
 		this.draw = new Draw(motionController);
 		this.trickMenu = new TrickMenu(this);
-		this.musicPlayer = new MusicPlayer();		
+		this.musicPlayer = new MusicPlayer();
+	}
+
+	public Draw getDraw() {
+		return draw;
+	}
+
+	public MotionController getMotionController() {
+		return motionController;
 	}
 
 	// maak een keuze voor een programma
@@ -55,7 +62,7 @@ public class Robot {
 			File sample = dragon.sample_dragons_daughter.getFile();
 
 			Sound.playSample(sample, Sound.VOL_MAX);
-			
+
 			LCD.clear();
 			LCD.drawString("Druk ENTER", 3, 3);
 			LCD.drawString("om te starten", 2, 4);
@@ -103,37 +110,24 @@ public class Robot {
 			}
 			motionController.close();
 		}
-	}	
-	
-	// TODO: MAke runners for MAstermind; after all runners made, and marvin is one, we can remove the getters above here for tricks. 
-	public void runMusic() {
-		MusicPlayer musicPlayer = new MusicPlayer();
-		musicPlayer.run();
 	}
-	
+
+	public void runDraw() {
+		draw.runDrawSequence();
+	}
+
 	public void initAndRunFollowLine() {
 		FollowLine newFollowline = new FollowLine(pidController, CS, motionController, dragon);
 		newFollowline.run();
 	}
-	
+
 	public void runMasterMind() {
 		mastermind.playMasterMind();
 	}
-	
-	public void runDraw() {
-		LCD.drawString("Bye Felicia", 0, 0);
-		Delay.msDelay(3000);
-	}
 
-	// Getters
-	public MotionController getMotionController() {
-		return motionController;
+	// runners for TrickMenu
+	public void runMusic() {
+		MusicPlayer musicPlayer = new MusicPlayer();
+		musicPlayer.run();
 	}
-
-	public Draw getDraw() {
-		return draw;
-	}
-	
-	
-	
 }

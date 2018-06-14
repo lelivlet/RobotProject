@@ -6,6 +6,7 @@
 
 package programs;
 
+import lejos.hardware.Button;
 import lejos.hardware.lcd.LCD;
 import lejos.utility.Delay;
 import models.MotionController;
@@ -19,35 +20,13 @@ public class Draw {
 	private final double TURN_FACTOR = 1.75;
 	private final int DELAY = 10000;
 
-	// constructor 
+	// constructor
 	public Draw(MotionController BW) {
 		this.pathFinder = BW;
 	}
 
-	// A method to draw a pentagon
-
-	// Draw Pentagon // maybe some minor adjusting in the array for degrees; notably the last one, also the length of the last line needs adjusting.
-	public void drawPentagon(int length, char side) {
-		
-		// hier moeten waardes aangepast worden om te compenseren voor het gebrek aan nauwkeurigheid vd motoren;
-		int[] correctionValues = {90, 90, 90, 95, 60};
-		
-		// draw a line 4 times
-		for (int i = 0; i < 5; i++) {
-
-			pathFinder.setRotations(pathFinder.getRotationDegreesFromLength(length));
-			pathFinder.waitComplete();
-
-			pathFinder.rotateTo(side, correctionValues[i]);
-			pathFinder.waitComplete();
-
-		}
-		// close method
-		pathFinder.close();
-	}
-
 	// A method to draw a circle
-	// deze methode is perfect zoals ie is. 
+	// deze methode is perfect zoals ie is.
 	public void drawCircle() {
 
 		pathFinder.turnCircularRight(SPEED, TURN_FACTOR);
@@ -57,31 +36,66 @@ public class Draw {
 		pathFinder.volledigeStop();
 	}
 
+	// kan beter maar doet wat ie moet doen.
+	public void drawNestedSpiral() {
+	
+		double SPIRAL_TURN_FACTOR = 1.75;
+	
+		for (int i = 0; i < 4; i++) {
+	
+			pathFinder.turnCircularRight(SPEED, SPIRAL_TURN_FACTOR);
+	
+			Delay.msDelay(DELAY);
+			SPIRAL_TURN_FACTOR -= -.25;
+		}
+	}
+
 	// A method to draw a pentagram
-	public void drawPentagram(double length) {
+	public void drawPentagram(double length, char side) {
+
+		int[] correctionValues = { 36, 36, 36, 36, 36 };
 
 		for (int i = 0; i < 5; i++) {
 
-			// pathFinder.forward(SPEED);
-			pathFinder.setEngineSpeed(SPEED, SPEED);
-
 			pathFinder.setRotations(pathFinder.getRotationDegreesFromLength(length));
-			// Delay.msDelay(length);
-
 			pathFinder.waitComplete();
 
-			pathFinder.rotateTo('R', 36); // poot pentagram = 36 graden, hij draait naar rechts
+			pathFinder.rotateTo(side, correctionValues[i]);
+			pathFinder.waitComplete();
+
 		}
+		pathFinder.close();
 		// insert the tune here
+	}
+
+	// A method to draw a pentagon
+	// // maybe some minor adjusting in the array for degrees; notably
+	// the last one, also the length of the last line needs adjusting.
+	public void drawPentagon(double length, char side) {
+	
+		// hier moeten waardes aangepast worden om te compenseren voor het gebrek aan
+		// nauwkeurigheid vd motoren;
+		int[] correctionValues = { 90, 90, 90, 95, 60 };
+	
+		for (int i = 0; i < 5; i++) {
+	
+			pathFinder.setRotations(pathFinder.getRotationDegreesFromLength(length));
+			pathFinder.waitComplete();
+	
+			pathFinder.rotateTo(side, correctionValues[i]);
+			pathFinder.waitComplete();
+	
+		}
+		pathFinder.close();
 	}
 
 	// A method to draw a triangle
 	public void drawTriangle(int length, char side) {
-		
-		// hier moeten waardes aangepast worden om te compenseren voor het gebrek aan nauwkeurigheid vd motoren;
-		int[] correctionValues = {160, 150, 120};
-		
-		// draw a line 4 times
+
+		// hier moeten waardes aangepast worden om te compenseren voor het gebrek aan
+		// nauwkeurigheid vd motoren;
+		int[] correctionValues = { 160, 150, 120 };
+
 		for (int i = 0; i < 3; i++) {
 
 			pathFinder.setRotations(pathFinder.getRotationDegreesFromLength(length));
@@ -92,22 +106,49 @@ public class Draw {
 			pathFinder.waitComplete();
 
 		}
-		// close method
 		pathFinder.close();
 	}
 
+	public void nowDrawing() {
+	
+		LCD.clear();
+		LCD.drawString("Now drawing ...", 0, 3);
+	}
 
-	// kan beter maar doet wat ie moet doen. 
-	public void drawConcentricSpiral() {
-		
-		double SPIRAL_TURN_FACTOR = 1.75;
+	
+	// TRIANGLE??
+	public void runDrawSequence() {
 
-		for (int i = 0; i < 4; i++) {
+		while (Button.ESCAPE.isUp()) {
+			LCD.clear();
+			LCD.drawString("Press ENTER to draw fig1: SQUARE", 0, 3);
+			waitForEnter();
+			nowDrawing();
 
-		pathFinder.turnCircularRight(SPEED, SPIRAL_TURN_FACTOR);
+			drawPentagon(20, 'R');
 
-		Delay.msDelay(DELAY);
-		SPIRAL_TURN_FACTOR -= -.25; 
+			LCD.clear();
+			LCD.drawString("Press ENTER to draw fig2: TRIANGLE", 0, 3);
+			waitForEnter();
+			nowDrawing();
+
+			drawTriangle(20, 'R');
+
+			LCD.clear();
+			LCD.drawString("Press ENTER to draw fig3: NESTED SPIRAL", 0, 3);
+			waitForEnter();
+			nowDrawing();
+
+			drawNestedSpiral();
 		}
+		System.exit(1);
+	}
+
+	public void waitForEnter() {
+
+		while (Button.ENTER.isUp()) {
+		}
+
+		Delay.msDelay(2000);
 	}
 }
