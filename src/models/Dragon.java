@@ -10,8 +10,7 @@ import music.PlayList;
 import music.Song;
 
 /**
- * @author Harmen
- * De Dragon Class bestuurt het hoofd en de staart van de Dragon.
+ * @author Harmen De Dragon Class bestuurt het hoofd en de staart van de Dragon.
  */
 public class Dragon implements Runnable {
 
@@ -19,24 +18,28 @@ public class Dragon implements Runnable {
 	private static final int CORRECTION_FACTOR = 4; // correctie factor ivm de tandwielen
 	private int speed = 200;
 	private int correctedSpeed = speed * CORRECTION_FACTOR;
-	
+
 	public Song sample_dragon;
 	public Song sample_dragon_breath;
 	public Song sample_dragon_roar;
-	public Song sample_dragons_daughter;
 	public Song theme_song;
 	public PlayList playlist;
 	public int numberofTimes = 3;
-	private boolean play;
+	private boolean play = true;
+
 	
 	
+	public Dragon(MotionController motionController, int numberofTimes) {
+		this(motionController);
+		this.numberofTimes = numberofTimes;
+	}
+
 	public Dragon(MotionController motionController) {
 		this.motionController = motionController;
 		this.sample_dragon = new Song("Dragon", new File("dragon.wav"));
-		this.sample_dragon_breath = new Song("Dragon breath", new File("dragon_breath"));
-		this.sample_dragon_roar = new Song("Dragon roar", new File("dragon_roar"));
-		this.sample_dragons_daughter = new Song("Dragons Daughter", new File("the_dragons_daughter.wav"));
-		this.theme_song = new Song("Daenerys theme", new File("daenerys_theme_got"));
+		this.sample_dragon_breath = new Song("Dragon breath", new File("dragon_breath.wav"));
+		this.sample_dragon_roar = new Song("Dragon roar", new File("dragon_roar.wav"));
+		this.theme_song = new Song("Daenerys theme", new File("daenerys_theme_got.wav"));
 		this.playlist = new PlayList();
 		playlist.addSong(sample_dragon_roar);
 		playlist.addSong(theme_song);
@@ -48,28 +51,25 @@ public class Dragon implements Runnable {
 
 	public void run() {
 		Sound.twoBeeps();
-//		er is geen extra motortje voor de staart
-//		RegulatedMotor[] syncList = {motionController.getmB()};
-//		motionController.getmC().synchronizeWith(syncList );
-//		motionController.getmC().startSynchronization();
-		while (play) {
-			for (int i = 0; i < numberofTimes && play; i++) {
-				headRotateTo(0);
-				Delay.msDelay(500);	
-				headRotateTo(90);
-				Delay.msDelay(500);	
-				headRotateTo(-90);
-				Button.waitForAnyPress(500);
-				if (Button.ENTER.isDown()) {
-					play = false;
-				}
+		// er is geen extra motortje voor de staart
+		// RegulatedMotor[] syncList = {motionController.getmB()};
+		// motionController.getmC().synchronizeWith(syncList );
+		// motionController.getmC().startSynchronization();
+		for (int i = 0; i < numberofTimes && play; i++) {
+			headRotateTo(90);
+			Delay.msDelay(500);
+			headRotateTo(-90);
+			Delay.msDelay(500);
+			headRotateTo(0);
+						Button.waitForAnyPress(500);
+			if (Button.ENTER.isDown()) {
+				play = false;
 			}
 
 		}
-		
-		
+
 		while (Button.ENTER.isUp()) {
-			
+
 		}
 		motionController.getmB().close();
 	}
@@ -87,7 +87,5 @@ public class Dragon implements Runnable {
 	public void setSpeed(int speed) {
 		this.speed = speed;
 	}
-	
-	
 
 }
