@@ -58,28 +58,14 @@ public class Robot {
 		int selectedItem = selectMenu.select();
 		if (selectedItem == 0) {
 
-			FollowLine followline1 = new FollowLine(pidController, CS, motionController, dragon);
-			followline1.followLine();
+//			FollowLine followline1 = new FollowLine(pidController, CS, motionController, dragon);
+//			followline1.followLine();
 //			Sound.twoBeeps();
 //			File sample = dragon.sample_dragons_daughter.getFile();
 //
 //			Sound.playSample(sample, Sound.VOL_MAX);
 			
-//			LCD.clear();
-//			LCD.drawString("Druk ENTER", 3, 3);
-//			LCD.drawString("om te starten", 2, 4);
-//			Delay.msDelay(500);
-//			Button.ENTER.waitForPress();
-//			
-//			Runnable playlistDragon = dragon.playlist;
-//			Runnable followLine2 = new FollowLine(pidController, CS, motionController, dragon);
-//
-//			Thread thread1 = new Thread(playlistDragon);
-//			Thread thread2 = new Thread(followLine2);
-//
-//			// Start threads
-//			thread1.start();
-//			thread2.start();
+			initAndRunFollowLine();
 
 		} else if (selectedItem == 1) {
 			// TODO
@@ -115,7 +101,9 @@ public class Robot {
 			followline.calibrate();
 			followline.run();
 		}	
-	}	
+	}
+
+		
 	
 	// TODO: MAke runners for MAstermind; after all runners made, and marvin is one, we can remove the getters above here for tricks. 
 	public void runMusic() {
@@ -128,8 +116,24 @@ public class Robot {
 	}
 
 	public void initAndRunFollowLine() {
-		FollowLine newFollowline = new FollowLine(pidController, CS, motionController, dragon);
-		newFollowline.run();
+		LCD.clear();
+		LCD.drawString("Druk ENTER", 3, 3);
+		LCD.drawString("om te starten", 2, 4);
+		Delay.msDelay(500);
+		Button.ENTER.waitForPress();
+		
+		Delay.msDelay(3000);
+		dragon.run();
+		
+		Runnable playlistDragon = dragon.playlist;
+		Runnable followLine = new FollowLine(pidController, CS, motionController, dragon);
+
+		Thread thread1 = new Thread(playlistDragon);
+		Thread thread2 = new Thread(followLine);
+
+		// Start threads
+		thread1.start();
+		thread2.start();
 	}
 
 	public void runMasterMind() {

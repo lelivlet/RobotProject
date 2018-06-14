@@ -11,12 +11,14 @@ import programs.*;
 
 public class FollowLine implements Runnable {
 
+	
 	private AdvPID_Controller pidController;
 	private ColorSensor CS;
 	private MotionController motionController;
 	private Dragon dragon;
 	private boolean rightSide;
 	private boolean hasDragon = false;
+	private static final int DRAGON_SPEED = 1000;
 	private final static int STACK_SIZE = 10; // grootte van de stack voor de moving average wordt gebruikt om de bewegingen van de dragon vloeiend te maken
 	private final static float CORRECTION_FACTOR = 2; // corrigeerd de waarde voor de dragon bewegingen
 
@@ -59,19 +61,20 @@ public class FollowLine implements Runnable {
 		this.pidController.setStackSize(STACK_SIZE);
 	}
 	
-	public void followLine() {
+	public void run() {
 		calibrate();
-		Sound.twoBeeps();
-		
-		Runnable playlistDragon = dragon.playlist;
-		Runnable followLine = new FollowLine(pidController, CS, motionController, dragon);
-
-		Thread thread1 = new Thread(playlistDragon);
-		Thread thread2 = new Thread(followLine);
-
-		// Start threads
-		thread1.start();
-		thread2.start();
+		followLine();
+//		Sound.twoBeeps();
+//		
+//		Runnable playlistDragon = dragon.playlist;
+//		Runnable followLine = new FollowLine(pidController, CS, motionController, dragon);
+//
+//		Thread thread1 = new Thread(playlistDragon);
+//		Thread thread2 = new Thread(followLine);
+//
+//		// Start threads
+//		thread1.start();
+//		thread2.start();
 	}
 	
 	// hiermee kan de robot gecalibreerd worden
@@ -125,17 +128,17 @@ public class FollowLine implements Runnable {
 
 	}
 	
-	public void run() {
+	public void followLine() {
 		LCD.clear();
 		LCD.drawString("Druk ENTER", 3, 3);
 		LCD.drawString("om te starten", 2, 4);
-		Delay.msDelay(500);
 		Button.ENTER.waitForPress();
 		Sound.twoBeeps();
 
 		LCD.clear();
 		if(hasDragon) {
-			LCD.drawString("Go Dragon!!!", 3, 3);
+			LCD.drawString("Go Zwelgje!!!", 3, 3);
+			dragon.setSpeed(DRAGON_SPEED);
 		}
 		else {
 			LCD.drawString("Volg lijn!", 3, 3);
@@ -173,6 +176,9 @@ public class FollowLine implements Runnable {
 		LCD.clear();
 		LCD.drawString("Gestopt", 3, 3);
 		Delay.msDelay(3000);
+		if(hasDragon) {
+			dragon.run();
+		}
 		LCD.clear();
 		motionController.close();
 		CS.close();
