@@ -18,7 +18,7 @@ public class Draw {
 
 	private final int SPEED = 200;
 	private final double TURN_FACTOR = 1.75;
-	private final int DELAY = 10000;
+	private final int DELAY = 8000;
 
 	// constructor
 	public Draw(MotionController BW) {
@@ -48,6 +48,7 @@ public class Draw {
 			Delay.msDelay(DELAY);
 			SPIRAL_TURN_FACTOR -= -.25;
 		}
+		pathFinder.volledigeStop();
 	}
 
 	// A method to draw a pentagram
@@ -64,18 +65,18 @@ public class Draw {
 			pathFinder.waitComplete();
 
 		}
-		pathFinder.close();
+		// pathFinder.close();
 		// insert the tune here
 	}
 
 	// A method to draw a pentagon
 	// // maybe some minor adjusting in the array for degrees; notably
 	// the last one, also the length of the last line needs adjusting.
-	public void drawPentagon(double length, char side) {
+	public void drawSix(double length, char side) {
 	
 		// hier moeten waardes aangepast worden om te compenseren voor het gebrek aan
 		// nauwkeurigheid vd motoren;
-		int[] correctionValues = { 90, 90, 90, 95, 60 };
+		int[] correctionValues = { 72, 72, 72, 72, 72 };
 	
 		for (int i = 0; i < 5; i++) {
 	
@@ -86,7 +87,9 @@ public class Draw {
 			pathFinder.waitComplete();
 	
 		}
-		pathFinder.close();
+		//pathFinder.close();
+		pathFinder.setRotations(pathFinder.getRotationDegreesFromLength(14));
+
 	}
 
 	// A method to draw a triangle
@@ -94,7 +97,7 @@ public class Draw {
 
 		// hier moeten waardes aangepast worden om te compenseren voor het gebrek aan
 		// nauwkeurigheid vd motoren;
-		int[] correctionValues = { 160, 150, 120 };
+		int[] correctionValues = { 120, 120, 50 };
 
 		for (int i = 0; i < 3; i++) {
 
@@ -106,7 +109,7 @@ public class Draw {
 			pathFinder.waitComplete();
 
 		}
-		pathFinder.close();
+		// pathFinder.close();
 	}
 
 	public void nowDrawing() {
@@ -119,13 +122,13 @@ public class Draw {
 	// TRIANGLE??
 	public void runDrawSequence() {
 
-		while (Button.ESCAPE.isUp()) {
+//		while (Button.ESCAPE.isUp()) {
 			LCD.clear();
-			LCD.drawString("Press ENTER to draw fig1: SQUARE", 0, 3);
+			LCD.drawString("Press ENTER to draw fig1: PENTAGON", 0, 3);
 			waitForEnter();
 			nowDrawing();
 
-			drawPentagon(20, 'R');
+			drawSix(20, 'R');
 
 			LCD.clear();
 			LCD.drawString("Press ENTER to draw fig2: TRIANGLE", 0, 3);
@@ -140,7 +143,7 @@ public class Draw {
 			nowDrawing();
 
 			drawNestedSpiral();
-		}
+		//}
 		System.exit(1);
 	}
 

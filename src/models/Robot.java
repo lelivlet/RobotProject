@@ -114,6 +114,9 @@ public class Robot {
 
 	public void runDraw() {
 		draw.runDrawSequence();
+		//draw.drawSix(20, 'R');
+		// draw.drawTriangle(20, 'R');
+		// draw.drawNestedSpiral();
 	}
 
 	public void initAndRunFollowLine() {
